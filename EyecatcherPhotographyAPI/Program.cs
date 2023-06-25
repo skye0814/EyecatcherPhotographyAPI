@@ -25,10 +25,6 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
 builder.Services.ConfigureRepositoryWrapper();
 
-// Repository injection
-//builder.Services.AddScoped<IBillingDetailsRepository, BillingDetailsRepository>();
-//builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
-//builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 // Inject logging services
 builder.Logging.ClearProviders();
