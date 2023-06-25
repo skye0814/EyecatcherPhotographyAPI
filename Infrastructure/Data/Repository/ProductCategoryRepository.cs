@@ -18,13 +18,13 @@ namespace Infrastructure.Data.Repository
         public async Task CreateProductCategory(ProductCategory category)
         {
             Create(category);
-            Save();
+            await SaveAsync();
         }
 
         public async Task DeleteProductCategory(ProductCategory category)
         {
             Delete(category);
-            Save();
+            await SaveAsync();
         }
 
         public IEnumerable<ProductCategory> GetAllProductCategories()
@@ -33,17 +33,15 @@ namespace Infrastructure.Data.Repository
                 .OrderBy(x => x.CategoryName);
         }
 
-        public ProductCategory? GetProductCategoryById(long id)
+        public ProductCategory? GetProductCategoryById(long? id)
         {
             return FindByCondition(x => x.ProductCategoryID == id)
-                .DefaultIfEmpty(new ProductCategory())
                 .FirstOrDefault();
         }
 
         public ProductCategory? GetProductCategoryByName(string categoryName)
         {
             return FindByCondition(x => x.CategoryName == categoryName)
-                .DefaultIfEmpty(null)
                 .FirstOrDefault();
         }
 

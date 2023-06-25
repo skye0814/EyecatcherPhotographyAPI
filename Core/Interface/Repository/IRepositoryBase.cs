@@ -17,8 +17,14 @@ namespace Core.Interface.Repository
         void Create(T entity);
         void CreateMultiple(IEnumerable<T> entity);
         void Update(T entity);
+        void UpdateMultiple(IEnumerable<T> entity);
         void Delete(T entity);
         void DeleteMultiple(IEnumerable<T> entity);
         void Save();
+
+        // Asynchronous methods
+        Task CreateAsync(T entity);
+        Task CreateMultipleAsync(IEnumerable<T> entity);
+        Task SaveAsync();
     }
 }

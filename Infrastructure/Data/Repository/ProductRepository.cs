@@ -22,9 +22,21 @@ namespace Infrastructure.Data.Repository
                 .FirstOrDefault();
         }
 
+        public IQueryable<Product> GetProductsByProductCategoryId(long? productCategoryId)
+        {
+            return FindByConditionQuery(x => x.ProductCategory.ProductCategoryID == productCategoryId)
+                .AsQueryable();
+        }
+
         public Task UpdateProductRange(IEnumerable<Product> dbProducts, IEnumerable<Product> products)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task UpdateProductRange(IEnumerable<Product> dbProducts)
+        {
+            UpdateMultiple(dbProducts);
+            await SaveAsync();
         }
     }
 }

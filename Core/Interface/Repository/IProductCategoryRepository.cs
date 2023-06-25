@@ -9,7 +9,7 @@ namespace Core.Interface.Repository
 {
     public interface IProductCategoryRepository : IRepositoryBase<ProductCategory>
     {
-        ProductCategory? GetProductCategoryById(long id);
+        ProductCategory? GetProductCategoryById(long? id);
         IEnumerable<ProductCategory> GetAllProductCategories();
         Task CreateProductCategory(ProductCategory category);
         Task DeleteProductCategory(ProductCategory category);
