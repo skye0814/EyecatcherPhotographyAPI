@@ -12,12 +12,12 @@ namespace EyecatcherPhotographyAPI.Controllers
     public class ProductCategoryController : ControllerBase
     {
         private readonly RepositoryWrapper repository;
-        private readonly IProductCategoryService service;
+        private readonly IProductCategoryService productCategoryService;
 
-        public ProductCategoryController(RepositoryWrapper repository, IProductCategoryService service)
+        public ProductCategoryController(RepositoryWrapper repository, IProductCategoryService productCategoryService)
         {
             this.repository = repository;
-            this.service = service;
+            this.productCategoryService = productCategoryService;
         }
 
         [HttpGet("{id}", Name = "GetProductCategoryById")]
@@ -30,7 +30,7 @@ namespace EyecatcherPhotographyAPI.Controllers
             {
                 var category = repository.ProductCategory.GetProductCategoryById(id);
 
-                if (category == null || category.ProductCategoryID.Equals(0))
+                if (category == null)
                 {
                     return NotFound();
                 }
@@ -62,6 +62,7 @@ namespace EyecatcherPhotographyAPI.Controllers
 
         [HttpPut]
         [ProducesResponseType(typeof(ProductCategory), 201)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public IActionResult UpdateProductCategory([FromBody] ProductCategory category)
         {
@@ -79,7 +80,7 @@ namespace EyecatcherPhotographyAPI.Controllers
 
                 var dbCategory = repository.ProductCategory.GetProductCategoryById(category.ProductCategoryID);
 
-                if (dbCategory == null || dbCategory.ProductCategoryID.Equals(0))
+                if (dbCategory == null)
                 {
                     return NotFound("Product category does not exist.");
                 }
@@ -96,7 +97,7 @@ namespace EyecatcherPhotographyAPI.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ProductCategory), 201)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> CreateProductCategory([FromBody] ProductCategory category)
         {
@@ -131,6 +132,7 @@ namespace EyecatcherPhotographyAPI.Controllers
 
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> DeleteProductCategory(long id)
         {
@@ -138,12 +140,11 @@ namespace EyecatcherPhotographyAPI.Controllers
             {
                 var category = repository.ProductCategory.GetProductCategoryById(id);
 
-                if (category == null || category.ProductCategoryID.Equals(0))
+                if (category == null)
                 {
                     return NotFound();
                 }
-
-                await repository.ProductCategory.DeleteProductCategory(category);
+                await this.productCategoryService.DeleteProductCategory(category);
 
                 return NoContent();
             }
@@ -154,6 +155,9 @@ namespace EyecatcherPhotographyAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
         public IActionResult GetProductById(long id) 
         {
             try

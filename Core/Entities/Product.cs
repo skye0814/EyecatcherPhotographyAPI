@@ -19,5 +19,8 @@ namespace Core.Entities
         //Navprop
         [ForeignKey("ProductCategoryID")]
         public virtual ProductCategory? ProductCategory { get; set; }
+
+        // This is to modify the foreign key
+        public long? ProductCategoryID { get; set; }
     }
 }

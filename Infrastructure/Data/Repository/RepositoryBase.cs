@@ -16,15 +16,25 @@ namespace Infrastructure.Data.Repository
         {
             this.repositoryContext = repositoryContext;
         }
-
+  
         public void Create(T entity)
         {
             repositoryContext.Set<T>().Add(entity);
         }
 
+        public async Task CreateAsync(T entity)
+        {
+            await repositoryContext.Set<T>().AddAsync(entity);
+        }
+
         public void CreateMultiple(IEnumerable<T> entity)
         {
             repositoryContext.Set<T>().AddRange(entity);
+        }
+
+        public async Task CreateMultipleAsync(IEnumerable<T> entity)
+        {
+            await repositoryContext.Set<T>().AddRangeAsync(entity);
         }
 
         public void Delete(T entity)
@@ -67,9 +77,20 @@ namespace Infrastructure.Data.Repository
             repositoryContext.SaveChanges();
         }
 
+        public async Task SaveAsync()
+        {
+            await repositoryContext.SaveChangesAsync();
+        }
+
         public void Update(T entity)
         {
             repositoryContext.Set<T>().Update(entity);
         }
+
+        public void UpdateMultiple(IEnumerable<T> entity)
+        {
+            repositoryContext.Set<T>().UpdateRange(entity);
+        }
+
     }
 }

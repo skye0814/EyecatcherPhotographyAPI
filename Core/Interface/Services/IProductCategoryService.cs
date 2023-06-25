@@ -10,5 +10,6 @@ namespace Core.Interface.Services
     public interface IProductCategoryService
     {
         Task CreateProductCategory(ProductCategory category);
+        Task DeleteProductCategory(ProductCategory category);
     }
 }
