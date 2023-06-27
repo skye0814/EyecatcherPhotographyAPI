@@ -62,6 +62,7 @@ namespace EyecatcherPhotographyAPI.Controllers
 
         [HttpPut]
         [ProducesResponseType(typeof(ProductCategory), 201)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         public IActionResult UpdateProductCategory([FromBody] ProductCategory category)
@@ -97,7 +98,7 @@ namespace EyecatcherPhotographyAPI.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ProductCategory), 201)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         public async Task<IActionResult> CreateProductCategory([FromBody] ProductCategory category)
         {
