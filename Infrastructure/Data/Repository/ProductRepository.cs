@@ -21,6 +21,13 @@ namespace Infrastructure.Data.Repository
                 .OrderBy(x => x.ProductName);
         }
 
+        public Product? GetProductByProductTag(string productTag)
+        {
+            return Query().Where(x => x.ProductTag == productTag)
+                .Include(pc => pc.ProductCategory)
+                .FirstOrDefault();
+        }
+
         public Product? GetProductById(long id)
         {
             return Query().Where(x => x.ProductID == id)
