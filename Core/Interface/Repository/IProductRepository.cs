@@ -12,6 +12,7 @@ namespace Core.Interface.Repository
         Task UpdateProductRange(IEnumerable<Product> dbProducts, IEnumerable<Product> products);
         Product? GetProductById(long id);
         IQueryable<Product> GetProductsByProductCategoryId(long? productCategoryId);
+        Product? GetProductByProductTag(string productTag);
         Task UpdateProductRange(IEnumerable<Product> dbProducts);
         IEnumerable<Product> GetAllProducts();
     }
