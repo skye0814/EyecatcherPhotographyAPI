@@ -15,6 +15,12 @@ namespace Infrastructure.Data.Repository
         {
         }
 
+        public IEnumerable<Product> GetAllProducts()
+        {
+            return FindAll()
+                .OrderBy(x => x.ProductName);
+        }
+
         public Product? GetProductById(long id)
         {
             return Query().Where(x => x.ProductID == id)
