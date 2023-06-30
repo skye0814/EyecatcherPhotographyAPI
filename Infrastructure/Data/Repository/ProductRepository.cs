@@ -15,6 +15,13 @@ namespace Infrastructure.Data.Repository
         {
         }
         
+        public async Task UpdateProduct(Product dbProduct, Product product)
+        {
+            dbProduct.Map(product);
+            Update(dbProduct);
+            await SaveAsync();
+        }
+
         public async Task CreateProduct(Product product)
         {
             CreateAsync(product);
