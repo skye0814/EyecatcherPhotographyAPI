@@ -35,6 +35,32 @@ namespace EyecatcherPhotographyAPI.Controllers
             }
         }
 
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DeleteProduct(long id)
+        {
+            try
+            {
+                var product = repository.Product.GetProductById(id);
+
+                if(product == null)
+                {
+                    return NotFound("Product you are trying to delete does not exist");
+                }
+
+                await repository.Product.DeleteProduct(product);
+
+                return NoContent();
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
@@ -63,9 +89,16 @@ namespace EyecatcherPhotographyAPI.Controllers
                 }
 
                 // Check if there is existing product tag.. If yes, don't create
-                return Ok("pass");
+                var existingProduct = repository.Product.GetProductByProductTag(product.ProductTag);
 
-                
+                if(product != null)
+                {
+                    return BadRequest("There is already an existing Product Tag");
+                }
+
+                await repository.Product.CreateProduct(product);
+
+                return CreatedAtAction("GetProductCategoryById", new { id = product.ProductID }, product);
             }
             catch(Exception ex)
             {

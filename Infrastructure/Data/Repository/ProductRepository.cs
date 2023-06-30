@@ -14,6 +14,18 @@ namespace Infrastructure.Data.Repository
         public ProductRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
         }
+        
+        public async Task CreateProduct(Product product)
+        {
+            CreateAsync(product);
+            await SaveAsync();
+        }
+
+        public async Task DeleteProduct(Product product)
+        {
+            Delete(product);
+            await SaveAsync();
+        }
 
         public IEnumerable<Product> GetAllProducts()
         {
