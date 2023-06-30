@@ -11,6 +11,7 @@ namespace Core.Interface.Repository
     {
         Task CreateProduct(Product product);
         Task DeleteProduct(Product product);
+        Task UpdateProduct(Product dbProduct, Product product);
         Task UpdateProductRange(IEnumerable<Product> dbProducts, IEnumerable<Product> products);
         Product? GetProductById(long id);
         IQueryable<Product> GetProductsByProductCategoryId(long? productCategoryId);

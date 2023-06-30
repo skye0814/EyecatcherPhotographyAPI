@@ -9,6 +9,19 @@ namespace Infrastructure.Extensions
 {
     public static class ProductExtensions
     {
+        public static void Map(this Product dbProduct, Product product)
+        {
+            dbProduct.ProductID = product.ProductID;
+            dbProduct.ProductName = product.ProductName;
+            dbProduct.ProductTag = product.ProductTag;
+            dbProduct.ProductDescription = product.ProductDescription;
+            dbProduct.FreeText1 = product.FreeText1;
+            dbProduct.FreeText2 = product.FreeText2;
+            dbProduct.FreeText3 = product.FreeText3;
+            dbProduct.FreeText4 = product.FreeText4;
+            dbProduct.Price = product.Price;
+        }
+
         public static void MapMultiple(this IEnumerable<Product> dbProducts, IEnumerable<Product> products)
         {
             try
