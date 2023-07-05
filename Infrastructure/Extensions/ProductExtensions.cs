@@ -20,6 +20,7 @@ namespace Infrastructure.Extensions
             dbProduct.FreeText3 = product.FreeText3;
             dbProduct.FreeText4 = product.FreeText4;
             dbProduct.Price = product.Price;
+            dbProduct.ProductCategoryID = product.ProductCategoryID;
         }
 
         public static void MapMultiple(this IEnumerable<Product> dbProducts, IEnumerable<Product> products)
@@ -38,7 +39,10 @@ namespace Infrastructure.Extensions
                         dbProduct.FreeText1 = product.FreeText2;
                         dbProduct.FreeText1 = product.FreeText3;
                         dbProduct.FreeText1 = product.FreeText4;
-                        dbProduct.ProductCategory.ProductCategoryID = product.ProductCategory.ProductCategoryID;
+                        dbProduct.ProductCategoryID = product.ProductCategoryID;
+
+                        // We cannot edit this
+                        //dbProduct.ProductCategory.ProductCategoryID = product.ProductCategory.ProductCategoryID;
                     }
                 }
             }
