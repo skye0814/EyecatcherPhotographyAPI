@@ -11,9 +11,9 @@ namespace EyecatcherPhotographyAPI.Controllers
     [Route("[controller]/[action]")]
     public class ProductController : ControllerBase
     {
-        private readonly RepositoryWrapper repository;
+        private readonly IRepositoryWrapper repository;
 
-        public ProductController(RepositoryWrapper repository)
+        public ProductController(IRepositoryWrapper repository)
         {
             this.repository = repository;
         }

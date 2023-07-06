@@ -9,9 +9,9 @@
 
     public class ProductCategoryService : IProductCategoryService
     {
-        private readonly RepositoryWrapper repository;
+        private readonly IRepositoryWrapper repository;
 
-        public ProductCategoryService(RepositoryWrapper repository)
+        public ProductCategoryService(IRepositoryWrapper repository)
         {
             this.repository = repository;
         }
