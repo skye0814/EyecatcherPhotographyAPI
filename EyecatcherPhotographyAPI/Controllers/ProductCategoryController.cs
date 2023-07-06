@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Interface.Repository;
 using Core.Interface.Services;
 using Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Mvc;

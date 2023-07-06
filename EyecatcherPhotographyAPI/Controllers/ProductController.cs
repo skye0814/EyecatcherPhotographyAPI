@@ -1,4 +1,5 @@
 using Core.Entities;
+using Core.Interface.Repository;
 using Core.Interface.Services;
 using Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -66,7 +67,7 @@ namespace EyecatcherPhotographyAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(500)]
-        public IActionResult CreateProduct([FromBody] Product product)
+        public async Task<IActionResult> CreateProduct([FromBody] Product product)
         {
             try
             {
@@ -81,7 +82,7 @@ namespace EyecatcherPhotographyAPI.Controllers
                 }
 
                 // Check if the selected product category exists in db
-                var productCategory = repository.ProductCategory.GetProductCategoryById(product.ProductCategoryID)
+                var productCategory = repository.ProductCategory.GetProductCategoryById(product.ProductCategoryID);
 
                 if (productCategory == null)
                 {
