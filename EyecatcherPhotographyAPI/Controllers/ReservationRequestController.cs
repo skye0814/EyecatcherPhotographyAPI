@@ -10,9 +10,9 @@ namespace EyecatcherPhotographyAPI.Controllers
     [Route("[controller]/[action]")]
     public class ReservationRequestController : ControllerBase
     {
-        private readonly RepositoryWrapper repositoryWrapper;
+        private readonly IRepositoryWrapper repositoryWrapper;
 
-        public ReservationRequestController(RepositoryWrapper repositoryWrapper)
+        public ReservationRequestController(IRepositoryWrapper repositoryWrapper)
         {
             this.repositoryWrapper = repositoryWrapper;
         }
