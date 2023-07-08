@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Interface.Repository;
 using Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace EyecatcherPhotographyAPI.Controllers
         public IActionResult GetAllBillingDetails() 
         {
 
-            return Ok(repositoryWrapper.BillingDetails.FindByCondition(x => x.Customer.CustomerID == 1).DefaultIfEmpty());
+            return NotFound();
         }
     }
 }

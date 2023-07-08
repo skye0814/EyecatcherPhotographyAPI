@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interface.Repository;
+using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace Infrastructure.Data.Repository
 
         public async Task CreateProduct(Product product)
         {
-            CreateAsync(product);
+            await CreateAsync(product);
             await SaveAsync();
         }
 
@@ -42,8 +43,7 @@ namespace Infrastructure.Data.Repository
 
         public Product? GetProductByProductTag(string productTag)
         {
-            return Query().Where(x => x.ProductTag == productTag)
-                .Include(pc => pc.ProductCategory)
+            return FindByConditionQuery(x => x.ProductTag == productTag)
                 .FirstOrDefault();
         }
 
@@ -56,7 +56,7 @@ namespace Infrastructure.Data.Repository
 
         public IQueryable<Product> GetProductsByProductCategoryId(long? productCategoryId)
         {
-            return FindByConditionQuery(x => x.ProductCategory.ProductCategoryID == productCategoryId)
+            return FindByConditionQuery(x => x.ProductCategoryID == productCategoryId)
                 .AsQueryable();
         }
 

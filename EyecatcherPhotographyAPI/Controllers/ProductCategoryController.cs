@@ -1,6 +1,9 @@
-﻿using Core.Entities;
+﻿using AutoMapper;
+using Core.Entities;
+using Core.Interface.Repository;
 using Core.Interface.Services;
 using Infrastructure.Data.Repository;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,11 +16,13 @@ namespace EyecatcherPhotographyAPI.Controllers
     {
         private readonly IRepositoryWrapper repository;
         private readonly IProductCategoryService productCategoryService;
+        private readonly IMapper mapper;
 
-        public ProductCategoryController(IRepositoryWrapper repository, IProductCategoryService productCategoryService)
+        public ProductCategoryController(IRepositoryWrapper repository, IProductCategoryService productCategoryService, IMapper mapper)
         {
             this.repository = repository;
             this.productCategoryService = productCategoryService;
+            this.mapper = mapper;
         }
 
         [HttpGet("{id}", Name = "GetProductCategoryById")]
@@ -35,6 +40,7 @@ namespace EyecatcherPhotographyAPI.Controllers
                     return NotFound();
                 }
 
+                //return Ok(mapper.Map<ProductCategoryResponse>(category));
                 return Ok(category);
             }
             catch (Exception ex)
@@ -148,29 +154,6 @@ namespace EyecatcherPhotographyAPI.Controllers
                 await this.productCategoryService.DeleteProductCategory(category);
 
                 return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpGet("{id}")]
-        [ProducesResponseType(200)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public IActionResult GetProductById(long id) 
-        {
-            try
-            {
-                var product = repository.Product.GetProductById(id);
-
-                if (product == null)
-                {
-                    return NotFound("Product does not exists.");
-                }
-
-                return Ok(product);
             }
             catch (Exception ex)
             {
