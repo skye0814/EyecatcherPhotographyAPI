@@ -43,8 +43,7 @@ namespace Infrastructure.Data.Repository
 
         public Product? GetProductByProductTag(string productTag)
         {
-            return Query().Where(x => x.ProductTag == productTag)
-                .Include(pc => pc.ProductCategory)
+            return FindByConditionQuery(x => x.ProductTag == productTag)
                 .FirstOrDefault();
         }
 

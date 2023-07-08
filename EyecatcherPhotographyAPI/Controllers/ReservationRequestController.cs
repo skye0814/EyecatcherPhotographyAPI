@@ -22,7 +22,7 @@ namespace EyecatcherPhotographyAPI.Controllers
         public IActionResult GetAllBillingDetails() 
         {
 
-            return Ok(repositoryWrapper.BillingDetails.FindByCondition(x => x.Customer.CustomerID == 1).DefaultIfEmpty());
+            return NotFound();
         }
     }
 }

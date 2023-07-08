@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Core.Interface.Repository;
 using Infrastructure.Extensions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,8 +36,11 @@ namespace Infrastructure.Data.Repository
 
         public ProductCategory? GetProductCategoryById(long? id)
         {
-            return FindByCondition(x => x.ProductCategoryID == id)
+            return Query().Where(x => x.ProductCategoryID == id)
+                .Include(p => p.Products)
                 .FirstOrDefault();
+            //return FindByCondition(x => x.ProductCategoryID == id)
+            //    .FirstOrDefault();
         }
 
         public ProductCategory? GetProductCategoryByName(string categoryName)

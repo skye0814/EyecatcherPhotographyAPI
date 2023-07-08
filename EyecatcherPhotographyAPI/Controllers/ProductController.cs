@@ -19,6 +19,29 @@ namespace EyecatcherPhotographyAPI.Controllers
             this.repository = repository;
         }
 
+        [HttpGet("{id}", Name = "GetProductById")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public IActionResult GetProductById(long id)
+        {
+            try
+            {
+                var product = repository.Product.GetProductById(id);
+
+                if (product == null)
+                {
+                    return NotFound("Product does not exists.");
+                }
+
+                return Ok(product);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
@@ -81,7 +104,6 @@ namespace EyecatcherPhotographyAPI.Controllers
                     return BadRequest("Product entity is null");
                 }
 
-                // Check if the selected product category exists in db
                 var productCategory = repository.ProductCategory.GetProductCategoryById(product.ProductCategoryID);
 
                 if (productCategory == null)
@@ -89,17 +111,16 @@ namespace EyecatcherPhotographyAPI.Controllers
                     return NotFound("The selected Product Category does not exist");
                 }
 
-                // Check if there is existing product tag.. If yes, don't create
                 var existingProduct = repository.Product.GetProductByProductTag(product.ProductTag);
 
-                if(product != null)
+                if(existingProduct != null)
                 {
                     return BadRequest("There is already an existing Product Tag");
                 }
 
                 await repository.Product.CreateProduct(product);
 
-                return CreatedAtAction("GetProductCategoryById", new { id = product.ProductID }, product);
+                return CreatedAtAction("GetProductById", new { id = product.ProductID }, product);
             }
             catch(Exception ex)
             {
