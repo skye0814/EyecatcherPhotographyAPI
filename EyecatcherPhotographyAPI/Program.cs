@@ -5,6 +5,7 @@ using EyecatcherPhotography.Services;
 using EyecatcherPhotographyAPI.Extensions;
 using EyecatcherPhotographyAPI.Helper;
 using Infrastructure.Data.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,9 +19,22 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(AutomapperProfile));
 builder.Services.AddDbContext<RepositoryContext>(x => 
     x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// To enable includes from EFCore
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+builder.Services
+    .AddIdentityCore<IdentityUser>(options => {
+        options.SignIn.RequireConfirmedAccount = false;
+        options.User.RequireUniqueEmail = true;
+        options.Password.RequireDigit = false;
+        options.Password.RequiredLength = 6;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireLowercase = true;
+    })
+    .AddEntityFrameworkStores<RepositoryContext>();
 
 
 //Services injection and repository wrapper

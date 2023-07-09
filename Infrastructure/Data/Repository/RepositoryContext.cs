@@ -1,9 +1,11 @@
 ﻿using Core.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repository
 {
-    public class RepositoryContext : DbContext
+    public class RepositoryContext : IdentityUserContext<IdentityUser>
     {
         public RepositoryContext(DbContextOptions options) : base(options)
         {
@@ -17,6 +19,11 @@ namespace Infrastructure.Data.Repository
         DbSet<ProductCategory> ProductCategories { get; set; }
         DbSet<SystemUser> SystemUsers { get; set; }
         DbSet<TransactionHistory> TransactionHistory { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
 
     }
 }
