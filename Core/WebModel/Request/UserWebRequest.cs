@@ -1,4 +1,4 @@
-﻿namespace EyecatcherPhotographyAPI.WebModel.Request
+﻿namespace Core.WebModel.Request
 {
     public class UserWebRequest
     {

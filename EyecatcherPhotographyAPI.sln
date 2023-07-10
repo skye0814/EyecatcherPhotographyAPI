@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{44D8752C-7BDE-4B1F-8962-C9F4048FADD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EyecatcherPhotography.Services", "EyecatcherPhotography.Services\EyecatcherPhotography.Services.csproj", "{62F2F563-6A99-45AD-B8CD-6E2FFE717CC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EyecatcherPhotography.Services", "EyecatcherPhotography.Services\EyecatcherPhotography.Services.csproj", "{62F2F563-6A99-45AD-B8CD-6E2FFE717CC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4439FFBC-93EE-4C33-B449-231BB1E98F8B}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
