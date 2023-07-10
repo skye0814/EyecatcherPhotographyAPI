@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entities;
+using Core.WebModel.Response;
 
 namespace EyecatcherPhotographyAPI.Helper
 {

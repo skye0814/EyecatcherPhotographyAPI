@@ -1,5 +1,8 @@
 ﻿using Core.Entities;
-using EyecatcherPhotographyAPI.WebModel.Request;
+using Core.Interface.Services;
+using Core.WebModel.Request;
+using Core.WebModel.Response;
+using EyecatcherPhotography.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +13,12 @@ namespace EyecatcherPhotographyAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserManager<IdentityUser> userManager;
+        private readonly IAuthenticationService authService;
 
-        public UserController(UserManager<IdentityUser> userManager)
+        public UserController(UserManager<IdentityUser> userManager, IAuthenticationService authService)
         {
             this.userManager = userManager;
+            this.authService = authService;
         }
 
         [HttpPost]
@@ -56,6 +61,33 @@ namespace EyecatcherPhotographyAPI.Controllers
                 UserName = userDb.UserName,
                 Email = userDb.Email
             });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken([FromBody] AuthenticationRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid model object");
+            }
+
+            var user = await userManager.FindByNameAsync(request.UserName);
+
+            if (user == null)
+            {
+                return BadRequest("Username and/or password is null or empty");
+            }
+
+            var isPasswordValid = await userManager.CheckPasswordAsync(user, request.Password);
+
+            if (!isPasswordValid)
+            {
+                return BadRequest("Password is incorrect or invalid");
+            }
+
+            var token = authService.CreateToken(user);
+
+            return Ok(token);
         }
 
     }

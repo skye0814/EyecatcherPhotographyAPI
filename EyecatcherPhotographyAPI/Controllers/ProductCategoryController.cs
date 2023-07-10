@@ -4,12 +4,14 @@ using Core.Interface.Repository;
 using Core.Interface.Services;
 using Infrastructure.Data.Repository;
 using Infrastructure.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 
 namespace EyecatcherPhotographyAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]/[action]")]
     public class ProductCategoryController : ControllerBase
