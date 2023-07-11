@@ -47,7 +47,7 @@ namespace EyecatcherPhotographyAPI.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        public IActionResult GetAllProducts()
+        public IActionResult GetAllProducts(string? sort)
         {
             try
             {

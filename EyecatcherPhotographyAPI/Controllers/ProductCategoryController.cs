@@ -2,6 +2,8 @@
 using Core.Entities;
 using Core.Interface.Repository;
 using Core.Interface.Services;
+using Core.WebModel;
+using EyecatcherPhotographyAPI.Helper;
 using Infrastructure.Data.Repository;
 using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -54,13 +56,13 @@ namespace EyecatcherPhotographyAPI.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        public IActionResult GetAllProductCategory()
+        public IActionResult GetAllProductCategory(string? sort = "", int pageNumber = 1, int pageSize = 10)
         {
             try
             {
-                var categories = repository.ProductCategory.GetAllProductCategories();
+                var categories = repository.ProductCategory.GetAllProductCategories(sort, pageNumber, pageSize);
 
-                return Ok(categories);
+                return Ok(PaginationFilter.PaginationMap(categories, pageNumber, pageSize));
             }
             catch (Exception ex)
             {
