@@ -28,10 +28,23 @@ namespace Infrastructure.Data.Repository
             await SaveAsync();
         }
 
-        public IEnumerable<ProductCategory> GetAllProductCategories()
+        public IEnumerable<ProductCategory> GetAllProductCategories(string sort, int pageNumber, int pageSize)
         {
-            return FindAll()
-                .OrderBy(x => x.CategoryName);
+            switch (sort)
+            {
+                case "asc":
+                    return FindAll()
+                        .OrderBy(x => x.CategoryName)
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize);
+                case "desc":
+                    return FindAll()
+                        .OrderByDescending(x => x.CategoryName)
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize);
+                default:
+                    goto case "asc";
+            }
         }
 
         public ProductCategory? GetProductCategoryById(long? id)
