@@ -10,7 +10,8 @@ namespace Core.Interface.Repository
     public interface IProductCategoryRepository : IRepositoryBase<ProductCategory>
     {
         ProductCategory? GetProductCategoryById(long? id);
-        IEnumerable<ProductCategory> GetAllProductCategories(string sort, int pageNumber, int pageSize);
+        IQueryable<ProductCategory> GetAllProductCategories(string sort, int pageNumber, int pageSize);
+        int GetAllProductCategoriesCount();
         Task CreateProductCategory(ProductCategory category);
         Task DeleteProductCategory(ProductCategory category);
         void UpdateProductCategory(ProductCategory dbCategory, ProductCategory category);

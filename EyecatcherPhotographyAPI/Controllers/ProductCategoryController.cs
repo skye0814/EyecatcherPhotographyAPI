@@ -3,6 +3,7 @@ using Core.Entities;
 using Core.Interface.Repository;
 using Core.Interface.Services;
 using Core.WebModel;
+using Core.WebModel.Response;
 using EyecatcherPhotographyAPI.Helper;
 using Infrastructure.Data.Repository;
 using Infrastructure.Extensions;
@@ -61,8 +62,10 @@ namespace EyecatcherPhotographyAPI.Controllers
             try
             {
                 var categories = repository.ProductCategory.GetAllProductCategories(sort, pageNumber, pageSize);
+                int categoriesTotalCount = repository.ProductCategory.GetAllProductCategoriesCount();
 
-                return Ok(PaginationFilter.PaginationMap(categories, pageNumber, pageSize));
+                return Ok(new PaginationFilterResponse<ProductCategory>
+                    (pageNumber, pageSize, categories, categoriesTotalCount){});
             }
             catch (Exception ex)
             {

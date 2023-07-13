@@ -13,17 +13,18 @@ namespace Core.WebModel.Response
         public IEnumerable<T> Data {get; set;}
 
         // Total count of GetAll
+        public int TotalCountPerPage {get; set;}
         public int TotalCount {get; set;}
-        // Total count based on the page size and page number
-        public int Rows {get; set;}
+        public int TotalPage {get; set;}
 
-        public PaginationFilterResponse(int pageNumber, int pageSize, IEnumerable<T> data, int rows, int totalCount)
+        public PaginationFilterResponse(int pageNumber, int pageSize, IEnumerable<T> data, int totalCount)
         {
             this.PageNumber = pageNumber;
             this.PageSize = pageSize;
             this.Data = data;
-            this.Rows = data.Count();
+            this.TotalCountPerPage = data.Count();
             this.TotalCount = totalCount;
+            this.TotalPage = (int)Math.Ceiling((float)data.Count()/(float)totalCount);
         }
     }
 }
