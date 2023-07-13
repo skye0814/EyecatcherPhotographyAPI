@@ -27,24 +27,29 @@ namespace Infrastructure.Data.Repository
             Delete(category);
             await SaveAsync();
         }
-
-        public IEnumerable<ProductCategory> GetAllProductCategories(string sort, int pageNumber, int pageSize)
+    
+        public IQueryable<ProductCategory> GetAllProductCategories(string sort, int pageNumber, int pageSize)
         {
             switch (sort)
             {
                 case "asc":
-                    return FindAll()
+                    return Query()
                         .OrderBy(x => x.CategoryName)
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize);
                 case "desc":
-                    return FindAll()
+                    return Query()
                         .OrderByDescending(x => x.CategoryName)
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize);
                 default:
                     goto case "asc";
             }
+        }
+
+        public int GetAllProductCategoriesCount()
+        {
+            return FindAll().Count();
         }
 
         public ProductCategory? GetProductCategoryById(long? id)

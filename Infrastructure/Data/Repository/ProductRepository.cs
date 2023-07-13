@@ -35,10 +35,23 @@ namespace Infrastructure.Data.Repository
             await SaveAsync();
         }
 
-        public IEnumerable<Product> GetAllProducts()
+        public IQueryable<Product> GetAllProducts(string sort, int pageNumber, int pageSize, string search)
         {
-            return FindAll()
-                .OrderBy(x => x.ProductName);
+            switch(sort)
+            {
+                case "asc":
+                    return Query()
+                        .OrderBy(x => x.Price)
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize);
+                case "desc":
+                    return Query()
+                        .OrderByDescending(x => x.Price)
+                        .Skip((pageNumber - 1) * pageSize)
+                        .Take(pageSize);
+                default: 
+                    goto case "asc";
+            }
         }
 
         public Product? GetProductByProductTag(string productTag)
