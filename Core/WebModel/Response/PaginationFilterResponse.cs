@@ -15,7 +15,7 @@ namespace Core.WebModel.Response
         // Total count of GetAll
         public int TotalCountPerPage {get; set;}
         public int TotalCount {get; set;}
-        public int TotalPage {get; set;}
+        public int TotalPages {get; set;}
 
         public PaginationFilterResponse(int pageNumber, int pageSize, IEnumerable<T> data, int totalCount)
         {
@@ -24,7 +24,7 @@ namespace Core.WebModel.Response
             this.Data = data;
             this.TotalCountPerPage = data.Count();
             this.TotalCount = totalCount;
-            this.TotalPage = (int)Math.Ceiling((float)data.Count()/(float)totalCount);
+            this.TotalPages = (int)Math.Ceiling((float)totalCount/(float)data.Count());
         }
     }
 }
