@@ -7,7 +7,6 @@ namespace Infrastructure.Helper;
 
 public class ProductExpressionsDictionary
 {
-    // To get the definition, use ExpressionDictionary.GetValue("price")
     private Dictionary<string, Expression<Func<Product, object>>> dictionary;
 
     public ProductExpressionsDictionary()
