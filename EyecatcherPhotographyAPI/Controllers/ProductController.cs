@@ -47,11 +47,11 @@ namespace EyecatcherPhotographyAPI.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        public IActionResult GetAllProducts(string? sort = "", int pageNumber = 1, int pageSize = 10, string? search = "")
+        public IActionResult GetAllProducts(string? sort = "", int pageNumber = 1, int pageSize = 10, string? search = "", string sortBy = "")
         {
             try
             {
-                var products = repository.Product.GetAllProducts(sort, pageNumber, pageSize, search);
+                var products = repository.Product.GetAllProducts(sort, pageNumber, pageSize, search, sortBy);
 
                 return Ok(products);
             }

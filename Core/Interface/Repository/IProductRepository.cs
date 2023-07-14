@@ -17,6 +17,6 @@ namespace Core.Interface.Repository
         IQueryable<Product> GetProductsByProductCategoryId(long? productCategoryId);
         Product? GetProductByProductTag(string productTag);
         Task UpdateProductRange(IEnumerable<Product> dbProducts);
-        IQueryable<Product> GetAllProducts(string sort, int pageNumber, int pageSize, string search);
+        IQueryable<Product> GetAllProducts(string sortDirection, int pageNumber, int pageSize, string search, string sortBy);
     }
 }
