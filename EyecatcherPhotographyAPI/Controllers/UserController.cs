@@ -25,9 +25,7 @@ namespace EyecatcherPhotographyAPI.Controllers
         public async Task<IActionResult> CreateUser([FromBody] UserWebRequest user)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest("Invalid model object");
-            }
 
             var result = await userManager.CreateAsync(
                 new IdentityUser() {
@@ -38,9 +36,7 @@ namespace EyecatcherPhotographyAPI.Controllers
             );
 
             if (!result.Succeeded)
-            {
                 return BadRequest(result.Errors);
-            }
 
             user.Password = null;
             return CreatedAtAction("GetUser", new { userName = user.UserName }, user);
@@ -52,9 +48,7 @@ namespace EyecatcherPhotographyAPI.Controllers
             var userDb = await userManager.FindByNameAsync(username);
 
             if (userDb == null)
-            {
                 return NotFound("This user does not exist.");
-            }
 
             return Ok(new UserWebResponse()
             {
@@ -67,23 +61,17 @@ namespace EyecatcherPhotographyAPI.Controllers
         public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken([FromBody] AuthenticationRequest request)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest("Invalid model object");
-            }
 
             var user = await userManager.FindByNameAsync(request.UserName);
 
             if (user == null)
-            {
-                return BadRequest("Username and/or password is null or empty");
-            }
+                return BadRequest("Username does not exist");
 
             var isPasswordValid = await userManager.CheckPasswordAsync(user, request.Password);
 
             if (!isPasswordValid)
-            {
                 return BadRequest("Password is incorrect or invalid");
-            }
 
             var token = authService.CreateToken(user);
 
