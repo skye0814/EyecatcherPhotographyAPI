@@ -21,8 +21,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(AutomapperProfile));
+// builder.Services.AddDbContext<RepositoryContext>(x => 
+//     x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddDbContext<RepositoryContext>(x => 
-    x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    x.UseSqlite(builder.Configuration.GetConnectionString("DefaultSqliteConnection")));
 
 // To enable includes from EFCore
 builder.Services.AddControllers().AddNewtonsoftJson(options =>

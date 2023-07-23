@@ -16,19 +16,7 @@
         {
             this.repository = repository;
         }
-
-        public async Task CreateProductCategory(ProductCategory category)
-        {
-            try
-            {
-                throw new NotImplementedException();
-            }
-            catch(Exception ex)
-            {
-                throw new Exception("Error occured on ProductCategory service.", ex);
-            }
-        }
-
+        
         public async Task DeleteProductCategory(ProductCategory category)
         {
             try

@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Core.Interface.Repository;
 using Infrastructure.Extensions;
+using Infrastructure.Helper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 namespace Infrastructure.Data.Repository
 {
     public class ProductRepository : RepositoryBase<Product>, IProductRepository
-    {
+    {   
         public ProductRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
         }
@@ -35,18 +36,20 @@ namespace Infrastructure.Data.Repository
             await SaveAsync();
         }
 
-        public IQueryable<Product> GetAllProducts(string sort, int pageNumber, int pageSize, string search)
+        public IQueryable<Product> GetAllProducts(string sortDirection, 
+            int pageNumber, int pageSize, string search, string sortBy)
         {
-            switch(sort)
+            var dictionary = new ProductExpressionsDictionary();
+            switch(sortDirection)
             {
                 case "asc":
                     return Query()
-                        .OrderBy(x => x.Price)
+                        .OrderBy(dictionary.GetValue(sortBy))
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize);
                 case "desc":
                     return Query()
-                        .OrderByDescending(x => x.Price)
+                        .OrderByDescending(dictionary.GetValue(sortBy))
                         .Skip((pageNumber - 1) * pageSize)
                         .Take(pageSize);
                 default: 
