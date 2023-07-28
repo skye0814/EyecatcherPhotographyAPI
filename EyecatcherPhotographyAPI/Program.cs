@@ -65,6 +65,7 @@ builder.Services
 //Services injection and repository wrapper
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.ConfigureRepositoryWrapper();
 
 
