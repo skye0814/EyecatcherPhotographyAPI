@@ -1,6 +1,7 @@
 using Core.Entities;
 using Core.Interface.Repository;
 using Core.Interface.Services;
+using Core.WebModel.Request;
 using Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,12 +34,24 @@ namespace EyecatcherPhotographyAPI.Controllers
 
                 if (product == null)
                 {
-                    return NotFound("Product does not exists.");
+                    return NotFound("Product does not exist.");
                 }
 
                 return Ok(product);
             }
             catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        public IActionResult GetProductByProductCategoryID_Filtered(PaginationFilterRequest pagedRequest){
+            
+            try
+            {
+                return NotFound();
+            }
+            catch(Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }

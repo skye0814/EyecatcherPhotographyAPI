@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Interface
 {
-    public interface IEntity
+    public class IEntity
     {
-        int Id { get; set; }
+        long ProductCategoryID { get; set; }
     }
 }
