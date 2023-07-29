@@ -1,7 +1,9 @@
+using AutoMapper;
 using Core.Entities;
 using Core.Interface.Repository;
 using Core.Interface.Services;
 using Core.WebModel.Request;
+using Core.WebModel.Response;
 using Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +18,12 @@ namespace EyecatcherPhotographyAPI.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IRepositoryWrapper repository;
+        private readonly IMapper mapper;
 
-        public ProductController(IRepositoryWrapper repository)
+        public ProductController(IRepositoryWrapper repository, IMapper mapper)
         {
             this.repository = repository;
+            this.mapper = mapper;
         }
 
         [HttpGet("{id}", Name = "GetProductById")]
@@ -45,11 +49,16 @@ namespace EyecatcherPhotographyAPI.Controllers
             }
         }
 
-        public IActionResult GetProductByProductCategoryID_Filtered(PaginationFilterRequest pagedRequest){
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public IActionResult GetAllProducts_Filtered(PaginationFilterRequest pagedRequest){
             
             try
             {
-                return NotFound();
+                var products = repository.Product.GetAllProducts_Filtered(pagedRequest);
+
+                return Ok(products);
             }
             catch(Exception ex)
             {
@@ -60,11 +69,11 @@ namespace EyecatcherPhotographyAPI.Controllers
         [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        public IActionResult GetAllProducts(string? sort = "", int pageNumber = 1, int pageSize = 10, string? search = "", string sortBy = "")
+        public IActionResult GetAllProducts()
         {
             try
             {
-                var products = repository.Product.GetAllProducts(sort, pageNumber, pageSize, search, sortBy);
+                var products = repository.Product.GetAllProducts();
 
                 return Ok(products);
             }

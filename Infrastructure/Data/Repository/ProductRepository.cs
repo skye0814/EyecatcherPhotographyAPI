@@ -1,10 +1,14 @@
 ﻿using Core.Entities;
+using Core.Interface;
 using Core.Interface.Repository;
+using Core.WebModel.Request;
 using Infrastructure.Extensions;
 using Infrastructure.Helper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,25 +40,27 @@ namespace Infrastructure.Data.Repository
             await SaveAsync();
         }
 
-        public IQueryable<Product> GetAllProducts(string sortDirection, 
-            int pageNumber, int pageSize, string search, string sortBy)
+        public IQueryable<Product> GetAllProducts_Filtered(PaginationFilterRequest request)
         {
             var dictionary = new ProductExpressionsDictionary();
-            switch(sortDirection)
-            {
-                case "asc":
-                    return Query()
-                        .OrderBy(dictionary.GetValue(sortBy))
-                        .Skip((pageNumber - 1) * pageSize)
-                        .Take(pageSize);
-                case "desc":
-                    return Query()
-                        .OrderByDescending(dictionary.GetValue(sortBy))
-                        .Skip((pageNumber - 1) * pageSize)
-                        .Take(pageSize);
-                default: 
-                    goto case "asc";
-            }
+
+            return Query()
+                        .Where(x =>
+                            x.ProductName!.Contains(request.Search) ||
+                            x.ProductDescription!.Contains(request.Search) ||
+                            x.ProductTag!.Contains(request.Search) ||
+                            x.FreeText1!.Contains(request.Search) ||
+                            x.FreeText2!.Contains(request.Search) ||
+                            x.FreeText3!.Contains(request.Search) ||
+                            x.FreeText4!.Contains(request.Search))
+                        .Sort(request.isAscending, dictionary.GetValue(request.SortBy))
+                        .Skip((request.PageNumber - 1) * request.PageSize)
+                        .Take(request.PageSize);
+        }
+
+        public IQueryable<Product> GetAllProducts()
+        {
+            return FindAllQuery();
         }
 
         public Product? GetProductByProductTag(string productTag)

@@ -14,12 +14,16 @@ public class ProductExpressionsDictionary
         dictionary = new Dictionary<string, Expression<Func<Product, object>>>();
         dictionary.Add("price", x => x.Price);
         dictionary.Add("productName", x => x.ProductName);
-        dictionary.Add("", x => x.ProductName);
+        dictionary.Add("productId", x => x.ProductID);
     }
 
 
     public Expression<Func<Product, object>> GetValue(string key)
     {
-        return dictionary[key];
+        if (dictionary.ContainsKey(key))
+            return dictionary[string.IsNullOrEmpty(key) ? "productId" : key];
+        else
+            return dictionary[string.IsNullOrEmpty(key) ? "productId" : "productId"];
+
     }
 }
