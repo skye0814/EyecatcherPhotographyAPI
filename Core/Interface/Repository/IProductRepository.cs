@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.WebModel.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Core.Interface.Repository
         IQueryable<Product> GetProductsByProductCategoryId(long? productCategoryId);
         Product? GetProductByProductTag(string productTag);
         Task UpdateProductRange(IEnumerable<Product> dbProducts);
-        IQueryable<Product> GetAllProducts(string sortDirection, int pageNumber, int pageSize, string search, string sortBy);
+        IQueryable<Product> GetAllProducts();
+        IQueryable<Product> GetAllProducts_Filtered(PaginationFilterRequest request);
     }
 }
