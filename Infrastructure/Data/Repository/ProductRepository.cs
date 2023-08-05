@@ -46,16 +46,21 @@ namespace Infrastructure.Data.Repository
 
             return Query()
                         .Where(x =>
-                            x.ProductName!.Contains(request.Search) ||
-                            x.ProductDescription!.Contains(request.Search) ||
-                            x.ProductTag!.Contains(request.Search) ||
-                            x.FreeText1!.Contains(request.Search) ||
-                            x.FreeText2!.Contains(request.Search) ||
-                            x.FreeText3!.Contains(request.Search) ||
-                            x.FreeText4!.Contains(request.Search))
+                            x.ProductName!.ToLower().Contains(request.Search!.ToLower()) ||
+                            x.ProductDescription!.ToLower().Contains(request.Search.ToLower()) ||
+                            x.ProductTag!.ToLower().Contains(request.Search.ToLower()) ||
+                            x.FreeText1!.ToLower().Contains(request.Search.ToLower()) ||
+                            x.FreeText2!.ToLower().Contains(request.Search.ToLower()) ||
+                            x.FreeText3!.ToLower().Contains(request.Search.ToLower()) ||
+                            x.FreeText4!.ToLower().Contains(request.Search.ToLower()))
                         .Sort(request.isAscending, dictionary.GetValue(request.SortBy))
                         .Skip((request.PageNumber - 1) * request.PageSize)
                         .Take(request.PageSize);
+        }
+
+        public int AllProductsCount()
+        {
+            return FindAll().Count();
         }
 
         public IQueryable<Product> GetAllProducts()
@@ -92,5 +97,6 @@ namespace Infrastructure.Data.Repository
             UpdateMultiple(dbProducts);
             await SaveAsync();
         }
+        
     }
 }

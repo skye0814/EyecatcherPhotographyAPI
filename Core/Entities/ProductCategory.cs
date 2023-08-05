@@ -13,6 +13,7 @@ namespace Core.Entities
         public long ProductCategoryID { get; set; }
         public string? CategoryName { get; set; }
         public string? CategoryDescription { get; set; }
+        public string? ImageUrl { get; set; }
 
         // Navprop
         public IEnumerable<Product>? Products { get; set; }

@@ -1,6 +1,7 @@
 using Core.Entities;
 using Core.Interface.Repository;
 using Core.Interface.Services;
+using Microsoft.AspNetCore.Cors;
 using EyecatcherPhotography.Services;
 using EyecatcherPhotographyAPI.Extensions;
 using EyecatcherPhotographyAPI.Helper;
@@ -16,6 +17,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+// Add CORS service
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAnyOrigin", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 //https://localhost:7081/swagger/index.html
 builder.Services.AddEndpointsApiExplorer();
@@ -81,6 +94,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("AllowAnyOrigin");
 
 app.UseHttpsRedirection();
 

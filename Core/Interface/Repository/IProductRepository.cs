@@ -20,5 +20,6 @@ namespace Core.Interface.Repository
         Task UpdateProductRange(IEnumerable<Product> dbProducts);
         IQueryable<Product> GetAllProducts();
         IQueryable<Product> GetAllProducts_Filtered(PaginationFilterRequest request);
+        int AllProductsCount();
     }
 }
