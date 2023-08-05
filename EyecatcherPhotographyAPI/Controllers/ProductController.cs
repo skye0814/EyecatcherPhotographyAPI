@@ -58,7 +58,13 @@ namespace EyecatcherPhotographyAPI.Controllers
             {
                 var products = repository.Product.GetAllProducts_Filtered(pagedRequest);
 
-                return Ok(products);
+                var result = new PaginationFilterResponse<Product>(
+                    pagedRequest.PageNumber,
+                    pagedRequest.PageSize,
+                    products,
+                    pagedRequest.Search != "" ? products.Count() : repository.Product.AllProductsCount());
+
+                return Ok(result);
             }
             catch(Exception ex)
             {
