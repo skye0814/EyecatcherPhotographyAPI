@@ -15,7 +15,7 @@ namespace EyecatcherPhotography.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private const int EXPIRATION_MINUTES = 1440000000;
+        private const int EXPIRATION_MINUTES = 144000;
         private readonly IConfiguration configuration;
 
         public AuthenticationService(IConfiguration configuration)
