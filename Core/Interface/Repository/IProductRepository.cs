@@ -19,7 +19,7 @@ namespace Core.Interface.Repository
         Product? GetProductByProductTag(string productTag);
         Task UpdateProductRange(IEnumerable<Product> dbProducts);
         IQueryable<Product> GetAllProducts();
-        IQueryable<Product> GetAllProducts_Filtered(PaginationFilterRequest request);
-        int AllProductsCount();
+        IQueryable<Product> GetProductsWithFilter(PaginationFilterRequest request);
+        int GetProductsWithFilterForCount(PaginationFilterRequest request);
     }
 }

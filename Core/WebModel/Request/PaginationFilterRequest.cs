@@ -15,7 +15,6 @@ namespace Core.WebModel.Request
         }
         public string? Search {get; set;} = string.Empty;
         public string SortBy {get; set;} = string.Empty;
-
         
     }
 }

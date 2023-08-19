@@ -52,17 +52,17 @@ namespace EyecatcherPhotographyAPI.Controllers
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        public IActionResult GetAllProducts_Filtered(PaginationFilterRequest pagedRequest){
+        public IActionResult Products([FromQuery]PaginationFilterRequest pagedRequest){
             
             try
             {
-                var products = repository.Product.GetAllProducts_Filtered(pagedRequest);
+                var products = repository.Product.GetProductsWithFilter(pagedRequest);
 
                 var result = new PaginationFilterResponse<Product>(
                     pagedRequest.PageNumber,
                     pagedRequest.PageSize,
                     products,
-                    pagedRequest.Search != "" ? products.Count() : repository.Product.AllProductsCount());
+                    repository.Product.GetProductsWithFilterForCount(pagedRequest));
 
                 return Ok(result);
             }

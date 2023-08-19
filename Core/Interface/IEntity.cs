@@ -8,6 +8,6 @@ namespace Core.Interface
 {
     public class IEntity
     {
-        long ProductCategoryID { get; set; }
+        public long? ProductCategoryID { get; set; }
     }
 }
