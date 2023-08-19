@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ namespace Infrastructure.Data.Repository
         public ProductRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
         }
-        
+
         public async Task UpdateProduct(Product dbProduct, Product product)
         {
             dbProduct.Map(product);
@@ -40,27 +41,43 @@ namespace Infrastructure.Data.Repository
             await SaveAsync();
         }
 
-        public IQueryable<Product> GetAllProducts_Filtered(PaginationFilterRequest request)
+        private Expression<Func<Product, bool>> ProductFilterWhereExpression(PaginationFilterRequest request)
         {
-            var dictionary = new ProductExpressionsDictionary();
-
-            return Query()
-                        .Where(x =>
-                            x.ProductName!.ToLower().Contains(request.Search!.ToLower()) ||
+            if(request.ProductCategoryID == null)
+                return x => x.ProductName!.ToLower().Contains(request.Search!.ToLower()) ||
                             x.ProductDescription!.ToLower().Contains(request.Search.ToLower()) ||
                             x.ProductTag!.ToLower().Contains(request.Search.ToLower()) ||
                             x.FreeText1!.ToLower().Contains(request.Search.ToLower()) ||
                             x.FreeText2!.ToLower().Contains(request.Search.ToLower()) ||
                             x.FreeText3!.ToLower().Contains(request.Search.ToLower()) ||
-                            x.FreeText4!.ToLower().Contains(request.Search.ToLower()))
+                            x.FreeText4!.ToLower().Contains(request.Search.ToLower());
+            else
+                return x => x.ProductCategoryID == request.ProductCategoryID &&
+                            (x.ProductName!.ToLower().Contains(request.Search!.ToLower()) ||
+                            x.ProductDescription!.ToLower().Contains(request.Search.ToLower()) ||
+                            x.ProductTag!.ToLower().Contains(request.Search.ToLower()) ||
+                            x.FreeText1!.ToLower().Contains(request.Search.ToLower()) ||
+                            x.FreeText2!.ToLower().Contains(request.Search.ToLower()) ||
+                            x.FreeText3!.ToLower().Contains(request.Search.ToLower()) ||
+                            x.FreeText4!.ToLower().Contains(request.Search.ToLower()));
+        }
+
+        public IQueryable<Product> GetProductsWithFilter(PaginationFilterRequest request)
+        {
+            var dictionary = new ProductExpressionsDictionary();
+
+            return Query()
+                        .Where(ProductFilterWhereExpression(request))
                         .Sort(request.isAscending, dictionary.GetValue(request.SortBy))
                         .Skip((request.PageNumber - 1) * request.PageSize)
                         .Take(request.PageSize);
         }
 
-        public int AllProductsCount()
+        public int GetProductsWithFilterForCount(PaginationFilterRequest request)
         {
-            return FindAll().Count();
+            return Query()
+                .Where(ProductFilterWhereExpression(request))
+                .Count();
         }
 
         public IQueryable<Product> GetAllProducts()

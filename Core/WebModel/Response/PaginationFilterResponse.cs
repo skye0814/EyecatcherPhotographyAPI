@@ -11,9 +11,6 @@ namespace Core.WebModel.Response
         public int PageNumber {get; set;}
         public int PageSize { get; set;}
         public IEnumerable<T> Data {get; set;}
-
-        // Total count of GetAll
-        public int TotalCountPerPage {get; set;}
         public int TotalCount {get; set;}
         public int TotalPages {get; set;}
 
@@ -22,9 +19,10 @@ namespace Core.WebModel.Response
             this.PageNumber = pageNumber;
             this.PageSize = pageSize;
             this.Data = data;
-            this.TotalCountPerPage = data.Count();
             this.TotalCount = totalCount;
-            this.TotalPages = (int)Math.Ceiling((float)totalCount/(float)data.Count());
+            this.TotalPages = data.Count() == 0 ? 0 : data.Count() < pageSize ? pageNumber : (int)Math.Ceiling((double)totalCount / data.Count());
+
+
         }
     }
 }
