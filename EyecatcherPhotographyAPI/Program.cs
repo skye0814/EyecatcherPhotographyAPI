@@ -94,7 +94,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors("AllowAnyOrigin");
 
 app.UseHttpsRedirection();
 
@@ -102,6 +101,7 @@ app.UseRouting();
 app.UseStaticFiles();
 
 app.UseAuthentication();
+app.UseCors("AllowAnyOrigin");
 app.UseAuthorization();
 
 app.MapControllers();
