@@ -1,0 +1,17 @@
+[Unit]
+Description=.NET Eyecatcher Photography Web API
+
+[Service]
+WorkingDirectory=/var/www/
+ExecStart=/usr/bin/dotnet /var/www/EyecatcherPhotographyAPI.dll
+Restart=always
+# Restart service after 10 seconds when dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=webapi
+Environment=ASPNETCORE_ENVIRONMENT=Development
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+Environment=ASPNETCORE_URLS=http://*:80
+
+[Install]
+WantedBy=multi-user.target
