@@ -49,7 +49,7 @@ namespace EyecatcherPhotographyAPI.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
         public IActionResult Products([FromQuery]PaginationFilterRequest pagedRequest){
