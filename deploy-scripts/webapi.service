@@ -11,7 +11,7 @@ KillSignal=SIGINT
 SyslogIdentifier=webapi
 Environment=ASPNETCORE_ENVIRONMENT=Production
 Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
-Environment=ASPNETCORE_URLS=https://ec2-13-250-96-191.ap-southeast-1.compute.amazonaws.com:80
+Environment=ASPNETCORE_URLS=https://ec2-13-250-96-191.ap-southeast-1.compute.amazonaws.com:443
 Environment=DOTNET_CLI_HOME=/root
 
 [Install]
