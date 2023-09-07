@@ -94,6 +94,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+// Temporarily added this, must remove in Production or move to app.Environment.IsDevelopment()
+app.UseDeveloperExceptionPage();
 
 app.UseHttpsRedirection();
 
