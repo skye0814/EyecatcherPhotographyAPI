@@ -21,11 +21,12 @@ builder.Services.AddControllers();
 // Add CORS service
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAnyOrigin", builder =>
+    options.AddDefaultPolicy(builder =>
     {
-        builder.AllowAnyOrigin()
+        builder.WithOrigins("https://skye0814-crispy-space-waddle-qxwrrxpvx65295r4-3000.app.github.dev")
                .AllowAnyHeader()
-               .AllowAnyMethod();
+               .AllowAnyMethod()
+               .AllowCredentials();
     });
 });
 
@@ -103,7 +104,7 @@ app.UseRouting();
 app.UseStaticFiles();
 
 app.UseAuthentication();
-app.UseCors("AllowAnyOrigin");
+app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();
