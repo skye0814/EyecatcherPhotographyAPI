@@ -11,7 +11,7 @@ namespace Core.WebModel.Request
         public int PageSize
         {
             get => _pageSize;
-            set => _pageSize = (value < 10) ? 10 : value;
+            set => _pageSize = (value < 2) ? 2 : value;
         }
         public string? Search {get; set;} = string.Empty;
         public string SortBy {get; set;} = string.Empty;

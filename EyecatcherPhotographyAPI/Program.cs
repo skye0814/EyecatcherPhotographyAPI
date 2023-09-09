@@ -23,7 +23,11 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("https://skye0814-crispy-space-waddle-qxwrrxpvx65295r4-3000.app.github.dev")
+        builder.WithOrigins(
+            "http://skye0814-crispy-space-waddle-qxwrrxpvx65295r4-3000.app.github.dev",
+            "https://skye0814-crispy-space-waddle-qxwrrxpvx65295r4-3000.app.github.dev", 
+            "http://localhost:3000"
+            )
                .AllowAnyHeader()
                .AllowAnyMethod()
                .AllowCredentials();
