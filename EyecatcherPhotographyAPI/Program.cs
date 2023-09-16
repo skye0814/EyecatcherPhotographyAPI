@@ -51,6 +51,7 @@ builder.Services.AddDbContext<RepositoryContext>(x =>
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+
 builder.Services
     .AddIdentityCore<IdentityUser>(options => {
         options.SignIn.RequireConfirmedAccount = false;
@@ -61,6 +62,7 @@ builder.Services
         options.Password.RequireUppercase = true;
         options.Password.RequireLowercase = true;
     })
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<RepositoryContext>();
 
 builder.Services

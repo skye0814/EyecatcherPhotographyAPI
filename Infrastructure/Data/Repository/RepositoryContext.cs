@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data.Repository
 {
-    public class RepositoryContext : IdentityUserContext<IdentityUser>
+    public class RepositoryContext : IdentityDbContext<IdentityUser, IdentityRole, string>
     {
         public RepositoryContext(DbContextOptions options) : base(options)
         {
@@ -56,7 +56,6 @@ namespace Infrastructure.Data.Repository
         private void SeedData(ModelBuilder modelBuilder)
         {
             var hasher = new PasswordHasher<IdentityUser>();
-
             var user = new IdentityUser
             {
                 Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
@@ -67,8 +66,13 @@ namespace Infrastructure.Data.Repository
                 EmailConfirmed = false,
                 PasswordHash = hasher.HashPassword(null, "@Skye0814!") 
             };
-
             modelBuilder.Entity<IdentityUser>().HasData(user);
+
+            
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole { Id = "6ed57acf-cb38-4df4-ac5f-be45115fd783", Name = "Administrator" },
+                new IdentityRole { Id = "38b13138-2eb6-415b-b1d4-c36f6c6fdee4", Name = "Customer" }
+            );
 
             modelBuilder.Entity<ProductCategory>().HasData(
                 new ProductCategory { ProductCategoryID = 1, CategoryName = "Birthday Services", CategoryDescription = "EyeCatch your birthday with wonderful shots", ImageUrl = "https://localhost:7081/images/productcategories/birthday1.jpg" },

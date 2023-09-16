@@ -13,12 +13,45 @@ namespace EyecatcherPhotographyAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserManager<IdentityUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
         private readonly IAuthenticationService authService;
 
-        public UserController(UserManager<IdentityUser> userManager, IAuthenticationService authService)
+        public UserController(
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            IAuthenticationService authService)
         {
             this.userManager = userManager;
+            this.roleManager = roleManager;
             this.authService = authService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignRole([FromBody] UserWebRequest user)
+        {
+            try
+            {
+                var userDb = await userManager.FindByIdAsync(user.Id);
+                var role = await roleManager.RoleExistsAsync(user.RoleName);
+
+                if (userDb == null && !role)
+                {
+                    return NotFound("User or role not found");
+                }
+
+                var result = await userManager.AddToRoleAsync(userDb, user.RoleName);
+
+                if(!result.Succeeded)
+                {
+                    return BadRequest(result.Errors);
+                }
+
+                return Ok("Role assigned to user successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error{ex.Message}");
+            }
         }
 
         [HttpPost]
@@ -52,6 +85,7 @@ namespace EyecatcherPhotographyAPI.Controllers
 
             return Ok(new UserWebResponse()
             {
+                Id = userDb.Id,
                 UserName = userDb.UserName,
                 Email = userDb.Email
             });
