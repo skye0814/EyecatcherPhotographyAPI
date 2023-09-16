@@ -12,7 +12,7 @@ using System;
 
 namespace EyecatcherPhotographyAPI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Administrator, Customer")]
     [ApiController]
     [Route("[controller]/[action]")]
     public class ProductController : ControllerBase

@@ -60,9 +60,9 @@ namespace Infrastructure.Data.Repository
             {
                 Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
                 UserName = "skye0814",
-                NormalizedUserName = "",
+                NormalizedUserName = "SKYE0814",
                 Email = "skye0814@gmail.com",
-                NormalizedEmail = "",
+                NormalizedEmail = "SKYE0814@GMAIL.COM",
                 EmailConfirmed = false,
                 PasswordHash = hasher.HashPassword(null, "@Skye0814!") 
             };
@@ -70,8 +70,8 @@ namespace Infrastructure.Data.Repository
 
             
             modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Id = "6ed57acf-cb38-4df4-ac5f-be45115fd783", Name = "Administrator" },
-                new IdentityRole { Id = "38b13138-2eb6-415b-b1d4-c36f6c6fdee4", Name = "Customer" }
+                new IdentityRole { Id = "6ed57acf-cb38-4df4-ac5f-be45115fd783", Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
+                new IdentityRole { Id = "38b13138-2eb6-415b-b1d4-c36f6c6fdee4", Name = "Customer", NormalizedName = "CUSTOMER" }
             );
 
             modelBuilder.Entity<ProductCategory>().HasData(

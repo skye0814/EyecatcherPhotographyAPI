@@ -17,18 +17,22 @@ namespace EyecatcherPhotography.Services
     {
         private const int EXPIRATION_MINUTES = 144000;
         private readonly IConfiguration configuration;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public AuthenticationService(IConfiguration configuration)
+        public AuthenticationService(IConfiguration configuration, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.configuration = configuration;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
-        public AuthenticationResponse CreateToken(IdentityUser user)
+        public async Task<AuthenticationResponse> CreateTokenAsync(IdentityUser user)
         {
             var expiration = DateTime.UtcNow.AddMinutes(EXPIRATION_MINUTES);
 
             var token = CreateJwtToken(
-                CreateClaims(user),
+                await CreateClaims(user),
                 CreateSigningCredentials(),
                 expiration
             );
@@ -42,13 +46,12 @@ namespace EyecatcherPhotography.Services
             };
         }
 
-
-
-
-
-
-        private Claim[] CreateClaims(IdentityUser user) 
+        private async Task<Claim[]> CreateClaims(IdentityUser user) 
         {
+            var userRoles = await userManager.GetRolesAsync(user);
+
+            var userRolesClaims = userRoles.Select(x => new Claim(ClaimTypes.Role, x));
+
             return new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, configuration["Jwt:Subject"]),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
@@ -56,7 +59,9 @@ namespace EyecatcherPhotography.Services
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email)
-            };
+            }
+            .Union(userRolesClaims)
+            .ToArray();
         }
 
         private JwtSecurityToken CreateJwtToken(Claim[] claims, SigningCredentials credentials, DateTime expiration)

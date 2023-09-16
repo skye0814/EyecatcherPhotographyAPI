@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20230916095520_SeedUserRoles")]
-    partial class SeedUserRoles
+    [Migration("20230916114038_NormalizedUsernameInSeedDatav2")]
+    partial class NormalizedUsernameInSeedDatav2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -537,14 +537,16 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = "6ed57acf-cb38-4df4-ac5f-be45115fd783",
-                            ConcurrencyStamp = "3bd2c763-bd0d-4b68-89a9-35e860d25bce",
-                            Name = "Administrator"
+                            ConcurrencyStamp = "a2f91fe9-24a5-4bca-98e2-4fb4b869c363",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "38b13138-2eb6-415b-b1d4-c36f6c6fdee4",
-                            ConcurrencyStamp = "d2540f98-17d2-454b-a973-e46ee56e3b3b",
-                            Name = "Customer"
+                            ConcurrencyStamp = "88e24bfc-cd25-49e6-8133-e23ee6061f2b",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
                         });
                 });
 
@@ -645,15 +647,15 @@ namespace Infrastructure.Migrations
                         {
                             Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "937dcb08-13e9-4b79-80b5-5f653cf30cb2",
+                            ConcurrencyStamp = "074b23e8-04fb-4a98-9f65-a153da614799",
                             Email = "skye0814@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedEmail = "",
-                            NormalizedUserName = "",
-                            PasswordHash = "AQAAAAEAACcQAAAAENARZYQ9Z+ZkIVAzYp5uHG3XNSYsKnoBzH4MzED0BtNWPFh78CWruzWEYiMJDfCarw==",
+                            NormalizedEmail = "SKYE0814@GMAIL.COM",
+                            NormalizedUserName = "SKYE0814",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJP25rcldOoRRi38j4Y5ZkjoDl+6c7CpWBDyLR7tig0g4p8Hsd0HxOWiy6NPWkmKow==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8b1cb2cb-a7d0-44a4-8855-0a6d5f9e113f",
+                            SecurityStamp = "9187fc0e-5745-486f-b27a-fe79b75b36fb",
                             TwoFactorEnabled = false,
                             UserName = "skye0814"
                         });

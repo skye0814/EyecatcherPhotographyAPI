@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20230916091028_SeedData")]
-    partial class SeedData
+    [Migration("20230916113644_NormalizedUsernameInSeedData")]
+    partial class NormalizedUsernameInSeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -188,7 +188,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             ProductID = 2L,
-                            FreeText1 = "PACKAGE 2 (PHOTO)','P2-B',NULL,'2 Photographers;Pre Birthday Shoot;Soft Copy;On The Day Event Coverage",
+                            FreeText1 = "2 Photographers;Pre Birthday Shoot;Soft Copy;On The Day Event Coverage",
                             Price = 6500.0,
                             ProductCategoryID = 1L,
                             ProductName = "PACKAGE 2 (PHOTO)",
@@ -197,7 +197,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             ProductID = 3L,
-                            FreeText1 = "PACKAGE 3 (PHOTO & VIDEO)','P3-B',NULL,'1 Photographer;1 Videographer;Pre Birthday Shoot;4-5 minutes Video Highlights;Soft Copy;On The Day Event Coverage",
+                            FreeText1 = "1 Photographer;1 Videographer;Pre Birthday Shoot;4-5 minutes Video Highlights;Soft Copy;On The Day Event Coverage",
                             Price = 8500.0,
                             ProductCategoryID = 1L,
                             ProductName = "PACKAGE 3 (PHOTO & VIDEO)",
@@ -325,7 +325,7 @@ namespace Infrastructure.Migrations
                             ProductID = 17L,
                             FreeText1 = "",
                             Price = 5000.0,
-                            ProductCategoryID = 1L,
+                            ProductCategoryID = 4L,
                             ProductName = "HAIR AND MAKE UP ARTIST A",
                             ProductTag = ""
                         },
@@ -334,7 +334,7 @@ namespace Infrastructure.Migrations
                             ProductID = 18L,
                             FreeText1 = "",
                             Price = 12000.0,
-                            ProductCategoryID = 1L,
+                            ProductCategoryID = 4L,
                             ProductName = "HAIR AND MAKE UP ARTIST B",
                             ProductTag = ""
                         },
@@ -343,7 +343,7 @@ namespace Infrastructure.Migrations
                             ProductID = 19L,
                             FreeText1 = "",
                             Price = 500.0,
-                            ProductCategoryID = 1L,
+                            ProductCategoryID = 4L,
                             ProductName = "BRIDESMAIDS HAIR AND MAKE UP",
                             ProductTag = ""
                         },
@@ -352,7 +352,7 @@ namespace Infrastructure.Migrations
                             ProductID = 20L,
                             FreeText1 = "",
                             Price = 5000.0,
-                            ProductCategoryID = 1L,
+                            ProductCategoryID = 4L,
                             ProductName = "COORDINATOR",
                             ProductTag = ""
                         },
@@ -361,7 +361,7 @@ namespace Infrastructure.Migrations
                             ProductID = 21L,
                             FreeText1 = "",
                             Price = 5000.0,
-                            ProductCategoryID = 1L,
+                            ProductCategoryID = 4L,
                             ProductName = "SOUNDS AND LIGHTS",
                             ProductTag = ""
                         },
@@ -370,7 +370,7 @@ namespace Infrastructure.Migrations
                             ProductID = 22L,
                             FreeText1 = "",
                             Price = 5000.0,
-                            ProductCategoryID = 1L,
+                            ProductCategoryID = 4L,
                             ProductName = "EMCEE",
                             ProductTag = ""
                         },
@@ -379,7 +379,7 @@ namespace Infrastructure.Migrations
                             ProductID = 23L,
                             FreeText1 = "",
                             Price = 4500.0,
-                            ProductCategoryID = 1L,
+                            ProductCategoryID = 4L,
                             ProductName = "40-PAGE PHOTO ALBUM IN HARDBOUND",
                             ProductTag = ""
                         },
@@ -388,7 +388,7 @@ namespace Infrastructure.Migrations
                             ProductID = 24L,
                             FreeText1 = "",
                             Price = 2500.0,
-                            ProductCategoryID = 1L,
+                            ProductCategoryID = 4L,
                             ProductName = "20-PAGE PHOTO ALBUM IN HARDBOUND",
                             ProductTag = ""
                         },
@@ -397,7 +397,7 @@ namespace Infrastructure.Migrations
                             ProductID = 25L,
                             FreeText1 = "",
                             Price = 6000.0,
-                            ProductCategoryID = 1L,
+                            ProductCategoryID = 4L,
                             ProductName = "SAME DAY EDIT (SDE EDITOR)",
                             ProductTag = ""
                         },
@@ -406,7 +406,7 @@ namespace Infrastructure.Migrations
                             ProductID = 26L,
                             FreeText1 = "",
                             Price = 4000.0,
-                            ProductCategoryID = 1L,
+                            ProductCategoryID = 4L,
                             ProductName = "AERIAL DRONE SHOTS",
                             ProductTag = ""
                         },
@@ -415,7 +415,7 @@ namespace Infrastructure.Migrations
                             ProductID = 27L,
                             FreeText1 = "",
                             Price = 700.0,
-                            ProductCategoryID = 1L,
+                            ProductCategoryID = 4L,
                             ProductName = "FLASH DRIVE",
                             ProductTag = ""
                         },
@@ -424,7 +424,7 @@ namespace Infrastructure.Migrations
                             ProductID = 28L,
                             FreeText1 = "",
                             Price = 3000.0,
-                            ProductCategoryID = 1L,
+                            ProductCategoryID = 4L,
                             ProductName = "ADDITIONAL PHOTOGRAPHER",
                             ProductTag = ""
                         },
@@ -433,7 +433,7 @@ namespace Infrastructure.Migrations
                             ProductID = 29L,
                             FreeText1 = "",
                             Price = 4500.0,
-                            ProductCategoryID = 1L,
+                            ProductCategoryID = 4L,
                             ProductName = "ADDITIONAL VIDEOGRAPHER",
                             ProductTag = ""
                         });
@@ -506,6 +506,69 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CustomerID");
 
                     b.ToTable("TransactionHistory");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "6ed57acf-cb38-4df4-ac5f-be45115fd783",
+                            ConcurrencyStamp = "cc028fe8-9a39-44a4-b9f3-c2dfe148da31",
+                            Name = "Administrator"
+                        },
+                        new
+                        {
+                            Id = "38b13138-2eb6-415b-b1d4-c36f6c6fdee4",
+                            ConcurrencyStamp = "00da166b-972c-4a58-90db-dc4508d019b0",
+                            Name = "Customer"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
@@ -582,15 +645,15 @@ namespace Infrastructure.Migrations
                         {
                             Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "39b6b686-2a2d-4173-b55a-b088cdfe99ce",
+                            ConcurrencyStamp = "0d337332-5fb6-418a-b22b-166b2bf10854",
                             Email = "skye0814@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedEmail = "",
-                            NormalizedUserName = "",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDrT10HAPgRas8zMN6isnp/YYYve+CNVU7Cs3Nzt1HDDOlZfboE8qKe+l9Ysy3zSjQ==",
+                            NormalizedEmail = "SKYE0814@GMAIL.COM",
+                            NormalizedUserName = "SKYE0814",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBktFnMGOe4GszqMmtOSOkxexA1G9YgwNk7bsvdaRy92IOnyQiywyLr26cwDpCxZ+g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6b8a9c94-f174-4a70-98a7-850457a6ba33",
+                            SecurityStamp = "3ad45454-e682-4455-935d-e840260162a2",
                             TwoFactorEnabled = false,
                             UserName = "skye0814"
                         });
@@ -639,6 +702,21 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -728,6 +806,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
@@ -739,6 +826,21 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")

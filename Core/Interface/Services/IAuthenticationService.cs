@@ -10,6 +10,6 @@ namespace Core.Interface.Services
 {
     public interface IAuthenticationService
     {
-        AuthenticationResponse CreateToken(IdentityUser user);
+        Task<AuthenticationResponse> CreateTokenAsync(IdentityUser user);
     }
 }

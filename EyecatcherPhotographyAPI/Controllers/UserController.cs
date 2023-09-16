@@ -3,6 +3,7 @@ using Core.Interface.Services;
 using Core.WebModel.Request;
 using Core.WebModel.Response;
 using EyecatcherPhotography.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,51 @@ namespace EyecatcherPhotographyAPI.Controllers
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.authService = authService;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            try
+            {
+                var userDb = await userManager.FindByIdAsync(id);
+
+                if (userDb == null)
+                {
+                    return NotFound("User does not exist");
+                }
+
+                await userManager.DeleteAsync(userDb);
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("{username}")]
+        public async Task<IActionResult> GetUserRole (string username)
+        {
+            try
+            {
+                var userDb = await userManager.FindByNameAsync(username);
+                var claims = userManager.GetClaimsAsync(userDb);
+
+                if (userDb == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                var role = await userManager.GetRolesAsync(userDb);
+
+                return Ok(role);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpPost]
@@ -50,7 +96,7 @@ namespace EyecatcherPhotographyAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error{ex.Message}");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
 
@@ -59,6 +105,11 @@ namespace EyecatcherPhotographyAPI.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest("Invalid model object");
+
+            var existingUsername = await userManager.FindByNameAsync(user.UserName);
+
+            if (existingUsername != null)
+                return BadRequest("Username already exists");
 
             var result = await userManager.CreateAsync(
                 new IdentityUser() {
@@ -70,6 +121,10 @@ namespace EyecatcherPhotographyAPI.Controllers
 
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
+
+            var createdUser = await userManager.FindByNameAsync(user.UserName);
+
+            await AssignRole(new UserWebRequest { Id = createdUser.Id, RoleName = "Customer" });
 
             user.Password = null;
             return CreatedAtAction("GetUser", new { userName = user.UserName }, user);
@@ -107,7 +162,7 @@ namespace EyecatcherPhotographyAPI.Controllers
             if (!isPasswordValid)
                 return BadRequest("Password is incorrect or invalid");
 
-            var token = authService.CreateToken(user);
+            var token = await authService.CreateTokenAsync(user);
 
             return Ok(token);
         }
