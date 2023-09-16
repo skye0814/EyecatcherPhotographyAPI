@@ -18,5 +18,6 @@ namespace Core.Entities
         public IEnumerable<BillingDetails>? BillingDetails { get; set; }
         [ForeignKey("CustomerID")]
         public virtual Customer? Customer { get; set; }
+        public Guid? CustomerID { get; set; }
     }
 }

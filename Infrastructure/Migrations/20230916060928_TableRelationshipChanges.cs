@@ -5,10 +5,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    /// <inheritdoc />
-    public partial class MyFirstMigration : Migration
+    public partial class TableRelationshipChanges : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -29,6 +27,7 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Discriminator = table.Column<string>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -56,27 +55,12 @@ namespace Infrastructure.Migrations
                     ProductCategoryID = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     CategoryName = table.Column<string>(type: "TEXT", nullable: true),
-                    CategoryDescription = table.Column<string>(type: "TEXT", nullable: true)
+                    CategoryDescription = table.Column<string>(type: "TEXT", nullable: true),
+                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductCategories", x => x.ProductCategoryID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SystemUsers",
-                columns: table => new
-                {
-                    SystemUserID = table.Column<long>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Username = table.Column<string>(type: "TEXT", nullable: true),
-                    Password = table.Column<string>(type: "TEXT", nullable: true),
-                    isAdmin = table.Column<bool>(type: "INTEGER", nullable: false),
-                    isCustomer = table.Column<bool>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SystemUsers", x => x.SystemUserID);
                 });
 
             migrationBuilder.CreateTable(
@@ -144,24 +128,24 @@ namespace Infrastructure.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    CustomerID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    CustomerID = table.Column<Guid>(type: "TEXT", nullable: false),
                     FirstName = table.Column<string>(type: "TEXT", nullable: true),
                     MiddleName = table.Column<string>(type: "TEXT", nullable: true),
                     LastName = table.Column<string>(type: "TEXT", nullable: true),
-                    EmailAddress = table.Column<string>(type: "TEXT", nullable: true),
                     Address = table.Column<string>(type: "TEXT", nullable: true),
                     ContactNumber = table.Column<int>(type: "INTEGER", nullable: true),
-                    SystemUserID = table.Column<long>(type: "INTEGER", nullable: true)
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    AspNetUsersId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.CustomerID);
                     table.ForeignKey(
-                        name: "FK_Customers_SystemUsers_SystemUserID",
-                        column: x => x.SystemUserID,
-                        principalTable: "SystemUsers",
-                        principalColumn: "SystemUserID");
+                        name: "FK_Customers_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,7 +155,7 @@ namespace Infrastructure.Migrations
                     TransactionHistoryID = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Status = table.Column<string>(type: "TEXT", nullable: true),
-                    CustomerID = table.Column<int>(type: "INTEGER", nullable: true)
+                    CustomerID = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -187,18 +171,18 @@ namespace Infrastructure.Migrations
                 name: "BillingDetails",
                 columns: table => new
                 {
-                    ReceiptID = table.Column<long>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    BillingDetailsID = table.Column<Guid>(type: "TEXT", nullable: false),
                     TotalAmount = table.Column<double>(type: "REAL", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "TEXT", nullable: false),
                     AppointmentDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CustomerID = table.Column<int>(type: "INTEGER", nullable: true),
+                    CartID = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CustomerID = table.Column<Guid>(type: "TEXT", nullable: true),
                     AppointmentPlaceID = table.Column<long>(type: "INTEGER", nullable: true),
                     TransactionHistoryID = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BillingDetails", x => x.ReceiptID);
+                    table.PrimaryKey("PK_BillingDetails", x => x.BillingDetailsID);
                     table.ForeignKey(
                         name: "FK_BillingDetails_Appointments_AppointmentPlaceID",
                         column: x => x.AppointmentPlaceID,
@@ -220,26 +204,20 @@ namespace Infrastructure.Migrations
                 name: "Carts",
                 columns: table => new
                 {
-                    CartID = table.Column<long>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    CartID = table.Column<Guid>(type: "TEXT", nullable: false),
                     Quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    TotalAmount = table.Column<double>(type: "REAL", nullable: false),
-                    CustomerID = table.Column<int>(type: "INTEGER", nullable: true),
-                    BillingDetailsReceiptID = table.Column<long>(type: "INTEGER", nullable: true)
+                    TotalAmounts = table.Column<double>(type: "REAL", nullable: false),
+                    CustomerID = table.Column<Guid>(type: "TEXT", nullable: true),
+                    BillingDetailsID = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Carts", x => x.CartID);
                     table.ForeignKey(
-                        name: "FK_Carts_BillingDetails_BillingDetailsReceiptID",
-                        column: x => x.BillingDetailsReceiptID,
+                        name: "FK_Carts_BillingDetails_BillingDetailsID",
+                        column: x => x.BillingDetailsID,
                         principalTable: "BillingDetails",
-                        principalColumn: "ReceiptID");
-                    table.ForeignKey(
-                        name: "FK_Carts_Customers_CustomerID",
-                        column: x => x.CustomerID,
-                        principalTable: "Customers",
-                        principalColumn: "CustomerID");
+                        principalColumn: "BillingDetailsID");
                 });
 
             migrationBuilder.CreateTable(
@@ -257,7 +235,7 @@ namespace Infrastructure.Migrations
                     FreeText4 = table.Column<string>(type: "TEXT", nullable: true),
                     Price = table.Column<double>(type: "REAL", nullable: false),
                     ProductCategoryID = table.Column<long>(type: "INTEGER", nullable: true),
-                    CartID = table.Column<long>(type: "INTEGER", nullable: true)
+                    CartID = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -311,19 +289,14 @@ namespace Infrastructure.Migrations
                 column: "TransactionHistoryID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Carts_BillingDetailsReceiptID",
+                name: "IX_Carts_BillingDetailsID",
                 table: "Carts",
-                column: "BillingDetailsReceiptID");
+                column: "BillingDetailsID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Carts_CustomerID",
-                table: "Carts",
-                column: "CustomerID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Customers_SystemUserID",
+                name: "IX_Customers_Id",
                 table: "Customers",
-                column: "SystemUserID");
+                column: "Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CartID",
@@ -341,7 +314,6 @@ namespace Infrastructure.Migrations
                 column: "CustomerID");
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
@@ -355,9 +327,6 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Products");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Carts");
@@ -378,7 +347,7 @@ namespace Infrastructure.Migrations
                 name: "Customers");
 
             migrationBuilder.DropTable(
-                name: "SystemUsers");
+                name: "AspNetUsers");
         }
     }
 }

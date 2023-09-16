@@ -11,14 +11,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20230714064115_MyFirstMigration")]
-    partial class MyFirstMigration
+    [Migration("20230916060928_TableRelationshipChanges")]
+    partial class TableRelationshipChanges
     {
-        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.19");
 
             modelBuilder.Entity("Core.Entities.AppointmentPlace", b =>
                 {
@@ -36,9 +35,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.BillingDetails", b =>
                 {
-                    b.Property<long>("ReceiptID")
+                    b.Property<Guid>("BillingDetailsID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("AppointmentDate")
                         .HasColumnType("TEXT");
@@ -46,8 +45,11 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("AppointmentPlaceID")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CustomerID")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("CartID")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("CustomerID")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("TEXT");
@@ -58,7 +60,7 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("TransactionHistoryID")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ReceiptID");
+                    b.HasKey("BillingDetailsID");
 
                     b.HasIndex("AppointmentPlaceID");
 
@@ -71,47 +73,49 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.Cart", b =>
                 {
-                    b.Property<long>("CartID")
+                    b.Property<Guid>("CartID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
-                    b.Property<long?>("BillingDetailsReceiptID")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("BillingDetailsID")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("CustomerID")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("CustomerID")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("TotalAmount")
+                    b.Property<double>("TotalAmounts")
                         .HasColumnType("REAL");
 
                     b.HasKey("CartID");
 
-                    b.HasIndex("BillingDetailsReceiptID");
-
-                    b.HasIndex("CustomerID");
+                    b.HasIndex("BillingDetailsID");
 
                     b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("Core.Entities.Customer", b =>
                 {
-                    b.Property<int>("CustomerID")
+                    b.Property<Guid>("CustomerID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Address")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("AspNetUsersId")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("ContactNumber")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("EmailAddress")
+                    b.Property<string>("FirstName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("Id")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
@@ -120,12 +124,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("MiddleName")
                         .HasColumnType("TEXT");
 
-                    b.Property<long?>("SystemUserID")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("CustomerID");
 
-                    b.HasIndex("SystemUserID");
+                    b.HasIndex("Id");
 
                     b.ToTable("Customers");
                 });
@@ -136,8 +137,8 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<long?>("CartID")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("CartID")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("FreeText1")
                         .HasColumnType("TEXT");
@@ -187,32 +188,12 @@ namespace Infrastructure.Migrations
                     b.Property<string>("CategoryName")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ProductCategoryID");
 
                     b.ToTable("ProductCategories");
-                });
-
-            modelBuilder.Entity("Core.Entities.SystemUser", b =>
-                {
-                    b.Property<long>("SystemUserID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("isAdmin")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("isCustomer")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("SystemUserID");
-
-                    b.ToTable("SystemUsers");
                 });
 
             modelBuilder.Entity("Core.Entities.TransactionHistory", b =>
@@ -221,8 +202,8 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CustomerID")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("CustomerID")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
                         .HasColumnType("TEXT");
@@ -244,6 +225,10 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -296,6 +281,8 @@ namespace Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -362,6 +349,13 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Core.Entities.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
             modelBuilder.Entity("Core.Entities.BillingDetails", b =>
                 {
                     b.HasOne("Core.Entities.AppointmentPlace", "AppointmentPlace")
@@ -383,24 +377,22 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.Cart", b =>
                 {
-                    b.HasOne("Core.Entities.BillingDetails", null)
+                    b.HasOne("Core.Entities.BillingDetails", "BillingDetails")
                         .WithMany("Carts")
-                        .HasForeignKey("BillingDetailsReceiptID");
+                        .HasForeignKey("BillingDetailsID");
 
-                    b.HasOne("Core.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerID");
-
-                    b.Navigation("Customer");
+                    b.Navigation("BillingDetails");
                 });
 
             modelBuilder.Entity("Core.Entities.Customer", b =>
                 {
-                    b.HasOne("Core.Entities.SystemUser", "SystemUser")
+                    b.HasOne("Core.Entities.ApplicationUser", "AspNetUsers")
                         .WithMany()
-                        .HasForeignKey("SystemUserID");
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("SystemUser");
+                    b.Navigation("AspNetUsers");
                 });
 
             modelBuilder.Entity("Core.Entities.Product", b =>
@@ -419,7 +411,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entities.TransactionHistory", b =>
                 {
                     b.HasOne("Core.Entities.Customer", "Customer")
-                        .WithMany()
+                        .WithMany("TransactionHistories")
                         .HasForeignKey("CustomerID");
 
                     b.Navigation("Customer");
@@ -465,6 +457,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entities.Customer", b =>
                 {
                     b.Navigation("BillingDetails");
+
+                    b.Navigation("TransactionHistories");
                 });
 
             modelBuilder.Entity("Core.Entities.ProductCategory", b =>

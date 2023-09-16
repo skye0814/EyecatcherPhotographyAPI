@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -9,19 +10,21 @@ namespace Core.Entities
 {
     public class Customer
     {
-        public int CustomerID { get; set; }
+        public Guid CustomerID { get; set; }
         public string? FirstName { get; set; }
         public string? MiddleName { get; set;}
         public string? LastName { get; set; }
-        public string? EmailAddress { get; set; }
         public string? Address { get; set; }
         public int? ContactNumber { get; set; }
 
         // Nav prop
         public IEnumerable<BillingDetails>? BillingDetails { get; set; }
+        public IEnumerable<TransactionHistory>? TransactionHistories { get; set; }
 
-        [ForeignKey("SystemUserID")]
-        public virtual SystemUser? SystemUser { get; set; }
+        [ForeignKey("Id")]
+        public virtual ApplicationUser? AspNetUsers { get; set; }
+        public Guid? AspNetUsersId { get; set; }
+       
 
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20230916091028_SeedData")]
+    partial class SeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.19");
@@ -186,7 +188,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             ProductID = 2L,
-                            FreeText1 = "2 Photographers;Pre Birthday Shoot;Soft Copy;On The Day Event Coverage",
+                            FreeText1 = "PACKAGE 2 (PHOTO)','P2-B',NULL,'2 Photographers;Pre Birthday Shoot;Soft Copy;On The Day Event Coverage",
                             Price = 6500.0,
                             ProductCategoryID = 1L,
                             ProductName = "PACKAGE 2 (PHOTO)",
@@ -195,7 +197,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             ProductID = 3L,
-                            FreeText1 = "1 Photographer;1 Videographer;Pre Birthday Shoot;4-5 minutes Video Highlights;Soft Copy;On The Day Event Coverage",
+                            FreeText1 = "PACKAGE 3 (PHOTO & VIDEO)','P3-B',NULL,'1 Photographer;1 Videographer;Pre Birthday Shoot;4-5 minutes Video Highlights;Soft Copy;On The Day Event Coverage",
                             Price = 8500.0,
                             ProductCategoryID = 1L,
                             ProductName = "PACKAGE 3 (PHOTO & VIDEO)",
@@ -323,7 +325,7 @@ namespace Infrastructure.Migrations
                             ProductID = 17L,
                             FreeText1 = "",
                             Price = 5000.0,
-                            ProductCategoryID = 4L,
+                            ProductCategoryID = 1L,
                             ProductName = "HAIR AND MAKE UP ARTIST A",
                             ProductTag = ""
                         },
@@ -332,7 +334,7 @@ namespace Infrastructure.Migrations
                             ProductID = 18L,
                             FreeText1 = "",
                             Price = 12000.0,
-                            ProductCategoryID = 4L,
+                            ProductCategoryID = 1L,
                             ProductName = "HAIR AND MAKE UP ARTIST B",
                             ProductTag = ""
                         },
@@ -341,7 +343,7 @@ namespace Infrastructure.Migrations
                             ProductID = 19L,
                             FreeText1 = "",
                             Price = 500.0,
-                            ProductCategoryID = 4L,
+                            ProductCategoryID = 1L,
                             ProductName = "BRIDESMAIDS HAIR AND MAKE UP",
                             ProductTag = ""
                         },
@@ -350,7 +352,7 @@ namespace Infrastructure.Migrations
                             ProductID = 20L,
                             FreeText1 = "",
                             Price = 5000.0,
-                            ProductCategoryID = 4L,
+                            ProductCategoryID = 1L,
                             ProductName = "COORDINATOR",
                             ProductTag = ""
                         },
@@ -359,7 +361,7 @@ namespace Infrastructure.Migrations
                             ProductID = 21L,
                             FreeText1 = "",
                             Price = 5000.0,
-                            ProductCategoryID = 4L,
+                            ProductCategoryID = 1L,
                             ProductName = "SOUNDS AND LIGHTS",
                             ProductTag = ""
                         },
@@ -368,7 +370,7 @@ namespace Infrastructure.Migrations
                             ProductID = 22L,
                             FreeText1 = "",
                             Price = 5000.0,
-                            ProductCategoryID = 4L,
+                            ProductCategoryID = 1L,
                             ProductName = "EMCEE",
                             ProductTag = ""
                         },
@@ -377,7 +379,7 @@ namespace Infrastructure.Migrations
                             ProductID = 23L,
                             FreeText1 = "",
                             Price = 4500.0,
-                            ProductCategoryID = 4L,
+                            ProductCategoryID = 1L,
                             ProductName = "40-PAGE PHOTO ALBUM IN HARDBOUND",
                             ProductTag = ""
                         },
@@ -386,7 +388,7 @@ namespace Infrastructure.Migrations
                             ProductID = 24L,
                             FreeText1 = "",
                             Price = 2500.0,
-                            ProductCategoryID = 4L,
+                            ProductCategoryID = 1L,
                             ProductName = "20-PAGE PHOTO ALBUM IN HARDBOUND",
                             ProductTag = ""
                         },
@@ -395,7 +397,7 @@ namespace Infrastructure.Migrations
                             ProductID = 25L,
                             FreeText1 = "",
                             Price = 6000.0,
-                            ProductCategoryID = 4L,
+                            ProductCategoryID = 1L,
                             ProductName = "SAME DAY EDIT (SDE EDITOR)",
                             ProductTag = ""
                         },
@@ -404,7 +406,7 @@ namespace Infrastructure.Migrations
                             ProductID = 26L,
                             FreeText1 = "",
                             Price = 4000.0,
-                            ProductCategoryID = 4L,
+                            ProductCategoryID = 1L,
                             ProductName = "AERIAL DRONE SHOTS",
                             ProductTag = ""
                         },
@@ -413,7 +415,7 @@ namespace Infrastructure.Migrations
                             ProductID = 27L,
                             FreeText1 = "",
                             Price = 700.0,
-                            ProductCategoryID = 4L,
+                            ProductCategoryID = 1L,
                             ProductName = "FLASH DRIVE",
                             ProductTag = ""
                         },
@@ -422,7 +424,7 @@ namespace Infrastructure.Migrations
                             ProductID = 28L,
                             FreeText1 = "",
                             Price = 3000.0,
-                            ProductCategoryID = 4L,
+                            ProductCategoryID = 1L,
                             ProductName = "ADDITIONAL PHOTOGRAPHER",
                             ProductTag = ""
                         },
@@ -431,7 +433,7 @@ namespace Infrastructure.Migrations
                             ProductID = 29L,
                             FreeText1 = "",
                             Price = 4500.0,
-                            ProductCategoryID = 4L,
+                            ProductCategoryID = 1L,
                             ProductName = "ADDITIONAL VIDEOGRAPHER",
                             ProductTag = ""
                         });
@@ -580,15 +582,15 @@ namespace Infrastructure.Migrations
                         {
                             Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aedf0ff9-d199-4af0-9a5f-8eb434236e3c",
+                            ConcurrencyStamp = "39b6b686-2a2d-4173-b55a-b088cdfe99ce",
                             Email = "skye0814@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "",
                             NormalizedUserName = "",
-                            PasswordHash = "AQAAAAEAACcQAAAAEG5flMtoCcCcfLLEoO4rMP5s813YYK+vIx2vGUZTuUjfefzh1tSAGcNiTUHvTPQ4Cg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEDrT10HAPgRas8zMN6isnp/YYYve+CNVU7Cs3Nzt1HDDOlZfboE8qKe+l9Ysy3zSjQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3f6fb498-a78d-4810-8f34-7f18f59b27e4",
+                            SecurityStamp = "6b8a9c94-f174-4a70-98a7-850457a6ba33",
                             TwoFactorEnabled = false,
                             UserName = "skye0814"
                         });

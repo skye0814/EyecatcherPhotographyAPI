@@ -11,13 +11,17 @@ namespace Core.Entities
     public class Cart
     {
         [Key]
-        public long CartID { get; set; }
+        public Guid CartID { get; set; }
         public int Quantity { get; set; }
-        public double TotalAmount { get; set; }
+        public double TotalAmounts { get; set; }
 
-        //Navigation prop
-        [ForeignKey("CustomerID")]
-        public virtual Customer? Customer { get; set; }
+
+        // Nav prop
+        public Guid? CustomerID { get; set; }
         public IEnumerable<Product>? Products { get; set;}
+
+        [ForeignKey("BillingDetailsID")]
+        public virtual BillingDetails? BillingDetails { get; set; }
+        public Guid? BillingDetailsID { get; set; }
     }
 }
