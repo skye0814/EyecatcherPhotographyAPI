@@ -3,9 +3,11 @@ using Core.Interface.Services;
 using Core.WebModel.Request;
 using Core.WebModel.Response;
 using EyecatcherPhotography.Services;
+using Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EyecatcherPhotographyAPI.Controllers
 {
@@ -27,6 +29,7 @@ namespace EyecatcherPhotographyAPI.Controllers
             this.authService = authService;
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
@@ -72,6 +75,7 @@ namespace EyecatcherPhotographyAPI.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> AssignRole([FromBody] UserWebRequest user)
         {
@@ -100,34 +104,95 @@ namespace EyecatcherPhotographyAPI.Controllers
             }
         }
 
+        private async Task<IdentityResult> AssignRole(string id, string roleName)
+        {
+            try
+            {
+                var userDb = await userManager.FindByIdAsync(id);
+                var role = await roleManager.RoleExistsAsync(roleName);
+
+                if (userDb == null && !role)
+                {
+                    throw new Exception("User or role does not exist"); 
+                }
+
+                var result = await userManager.AddToRoleAsync(userDb, roleName);
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception($"Adding role not succeeded: {result.Errors}");
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"There was an error occured on assigning role: {ex.Message}");
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserWebRequest user)
         {
-            if (!ModelState.IsValid)
-                return BadRequest("Invalid model object");
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest("Invalid model object");
 
-            var existingUsername = await userManager.FindByNameAsync(user.UserName);
+                var existingUsername = await userManager.FindByNameAsync(user.UserName);
 
-            if (existingUsername != null)
-                return BadRequest("Username already exists");
+                if (existingUsername != null)
+                    return BadRequest("Username already exists");
 
-            var result = await userManager.CreateAsync(
-                new IdentityUser() {
-                    UserName = user.UserName,
-                    Email = user.Email
-                },
-                user.Password
-            );
+                var result = await userManager.CreateAsync(
+                    new IdentityUser()
+                    {
+                        UserName = user.UserName,
+                        Email = user.Email
+                    },
+                    user.Password
+                );
 
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
+                if (!result.Succeeded)
+                    return BadRequest(result.Errors);
 
-            var createdUser = await userManager.FindByNameAsync(user.UserName);
+                var createdUser = await userManager.FindByNameAsync(user.UserName);
 
-            await AssignRole(new UserWebRequest { Id = createdUser.Id, RoleName = "Customer" });
+                var isRoleAssigned = await AssignRole(createdUser.Id, "Customer");
 
-            user.Password = null;
-            return CreatedAtAction("GetUser", new { userName = user.UserName }, user);
+                if (!isRoleAssigned.Succeeded)
+                    return BadRequest(isRoleAssigned.Errors);
+
+
+                user.Password = null;
+                return CreatedAtAction("GetUser", new { userName = user.UserName }, user);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            try
+            {
+                var userDb = await userManager.Users
+                    .Select(x => new UserWebResponse
+                    {
+                        Id = x.Id,
+                        UserName = x.UserName,
+                        Email = x.Email
+                    })
+                    .ToListAsync();
+
+                return Ok(userDb);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpGet("{username}", Name = "GetUser")]
