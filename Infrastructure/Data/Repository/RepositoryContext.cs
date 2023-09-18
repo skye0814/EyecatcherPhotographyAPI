@@ -75,10 +75,10 @@ namespace Infrastructure.Data.Repository
             );
 
             modelBuilder.Entity<ProductCategory>().HasData(
-                new ProductCategory { ProductCategoryID = 1, CategoryName = "Birthday Services", CategoryDescription = "EyeCatch your birthday with wonderful shots", ImageUrl = "https://localhost:7081/images/productcategories/birthday1.jpg" },
-                new ProductCategory { ProductCategoryID = 2, CategoryName = "Christening Services", CategoryDescription = "EyeCatch your beautiful kid of joy", ImageUrl = "https://localhost:7081/images/productcategories/christening1.jpg" },
-                new ProductCategory { ProductCategoryID = 3, CategoryName = "Wedding Services", CategoryDescription = "EyeCatch your wedding memories with your lifetime partner", ImageUrl = "https://localhost:7081/images/productcategories/wedding1.jpg" },
-                new ProductCategory { ProductCategoryID = 4, CategoryName = "Other Services", CategoryDescription = "Want to see more? Click here for other EyeCatcher services", ImageUrl = "https://localhost:7081/images/productcategories/others1.jpg" }
+                new ProductCategory { ProductCategoryID = 1, CategoryName = "Birthday Services", CategoryDescription = "EyeCatch your birthday with wonderful shots", ImageUrl = "images/productcategories/birthday1.jpg" },
+                new ProductCategory { ProductCategoryID = 2, CategoryName = "Christening Services", CategoryDescription = "EyeCatch your beautiful kid of joy", ImageUrl = "images/productcategories/christening1.jpg" },
+                new ProductCategory { ProductCategoryID = 3, CategoryName = "Wedding Services", CategoryDescription = "EyeCatch your wedding memories with your lifetime partner", ImageUrl = "images/productcategories/wedding1.jpg" },
+                new ProductCategory { ProductCategoryID = 4, CategoryName = "Other Services", CategoryDescription = "Want to see more? Click here for other EyeCatcher services", ImageUrl = "images/productcategories/others1.jpg" }
             );
 
             modelBuilder.Entity<Product>().HasData(

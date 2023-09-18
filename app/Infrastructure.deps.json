@@ -980,6 +980,7 @@
       },
       "Core/1.0.0": {
         "dependencies": {
+          "Microsoft.AspNetCore.Http": "2.2.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "6.0.19",
           "System.IdentityModel.Tokens.Jwt": "6.21.0"
         },

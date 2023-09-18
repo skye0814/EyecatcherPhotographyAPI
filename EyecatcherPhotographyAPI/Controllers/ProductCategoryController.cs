@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entities;
+using Core.Helper;
 using Core.Interface.Repository;
 using Core.Interface.Services;
 using Core.WebModel;
@@ -23,7 +24,10 @@ namespace EyecatcherPhotographyAPI.Controllers
         private readonly IProductCategoryService productCategoryService;
         private readonly IMapper mapper;
 
-        public ProductCategoryController(IRepositoryWrapper repository, IProductCategoryService productCategoryService, IMapper mapper)
+        public ProductCategoryController(
+            IRepositoryWrapper repository, 
+            IProductCategoryService productCategoryService, 
+            IMapper mapper)
         {
             this.repository = repository;
             this.productCategoryService = productCategoryService;
@@ -42,11 +46,10 @@ namespace EyecatcherPhotographyAPI.Controllers
 
                 if (category == null)
                 {
-                    return NotFound();
+                    return NotFound("Product Category does not exist");
                 }
 
-                //return Ok(mapper.Map<ProductCategoryResponse>(category));
-                return Ok(category);
+                return Ok(mapper.Map<ProductCategoryResponse>(category));
             }
             catch (Exception ex)
             {
@@ -61,13 +64,13 @@ namespace EyecatcherPhotographyAPI.Controllers
         {
             try
             {
-                var categories = repository.ProductCategory.GetAllProductCategories(sort, pageNumber, pageSize);
+                var categories = repository.ProductCategory.GetAllProductCategories(sort, pageNumber, pageSize).AsEnumerable();
                 int categoriesTotalCount = repository.ProductCategory.GetAllProductCategoriesCount();
 
-                var result = new PaginationFilterResponse<ProductCategory>(
+                var result = new PaginationFilterResponse<ProductCategoryResponse>(
                     pageNumber, 
-                    pageSize, 
-                    categories, 
+                    pageSize,
+                    mapper.Map<ProductCategoryResponse[]>(categories), 
                     categoriesTotalCount
                     );
 

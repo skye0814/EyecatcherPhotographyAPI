@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20230917071430_UpdateImageUrl")]
+    partial class UpdateImageUrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.19");
@@ -462,28 +464,28 @@ namespace Infrastructure.Migrations
                             ProductCategoryID = 1L,
                             CategoryDescription = "EyeCatch your birthday with wonderful shots",
                             CategoryName = "Birthday Services",
-                            ImageUrl = "images/productcategories/birthday1.jpg"
+                            ImageUrl = "/images/productcategories/birthday1.jpg"
                         },
                         new
                         {
                             ProductCategoryID = 2L,
                             CategoryDescription = "EyeCatch your beautiful kid of joy",
                             CategoryName = "Christening Services",
-                            ImageUrl = "images/productcategories/christening1.jpg"
+                            ImageUrl = "/images/productcategories/christening1.jpg"
                         },
                         new
                         {
                             ProductCategoryID = 3L,
                             CategoryDescription = "EyeCatch your wedding memories with your lifetime partner",
                             CategoryName = "Wedding Services",
-                            ImageUrl = "images/productcategories/wedding1.jpg"
+                            ImageUrl = "/images/productcategories/wedding1.jpg"
                         },
                         new
                         {
                             ProductCategoryID = 4L,
                             CategoryDescription = "Want to see more? Click here for other EyeCatcher services",
                             CategoryName = "Other Services",
-                            ImageUrl = "images/productcategories/others1.jpg"
+                            ImageUrl = "/images/productcategories/others1.jpg"
                         });
                 });
 
@@ -535,14 +537,14 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = "6ed57acf-cb38-4df4-ac5f-be45115fd783",
-                            ConcurrencyStamp = "a30645c6-6107-46a1-8b4a-bd3647ccd8ed",
+                            ConcurrencyStamp = "f138d5d8-c8dd-412f-a53a-34d79242f281",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "38b13138-2eb6-415b-b1d4-c36f6c6fdee4",
-                            ConcurrencyStamp = "9c574ed9-2fb4-4444-afa4-188ccd11926b",
+                            ConcurrencyStamp = "aa54dd14-3502-4607-b3ae-bc8442ccec2c",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -645,15 +647,15 @@ namespace Infrastructure.Migrations
                         {
                             Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ec852182-2008-4bc8-9364-62df07801ae1",
+                            ConcurrencyStamp = "b3e48790-180a-4f50-96f5-59b76d7a955d",
                             Email = "skye0814@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "SKYE0814@GMAIL.COM",
                             NormalizedUserName = "SKYE0814",
-                            PasswordHash = "AQAAAAEAACcQAAAAEC59NgcOFkX+NG8gZJLFWvAyg3Pe/p4VTQ9Q9zaKl240PmLHSpr0b+kCHuMEpxxjNQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBf87/J9vC/vl7wyPg/vkrREx+JAsNt+msyKYQxoxQbEMuoQsLylPQH0wL6zhiOsvw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4691da6e-f4a1-488a-adb0-22c97fcbb31b",
+                            SecurityStamp = "2d3e6945-e14c-411f-b521-d0b5684cb2ed",
                             TwoFactorEnabled = false,
                             UserName = "skye0814"
                         });

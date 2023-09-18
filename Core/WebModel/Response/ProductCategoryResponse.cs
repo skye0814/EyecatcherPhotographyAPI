@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Core.Entities;
+using Core.Helper;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,12 +12,18 @@ namespace Core.WebModel.Response
 {
     public class ProductCategoryResponse
     {
-        [Key]
+        private string? imageUrl;
+        private BaseUrlUtility baseUrlUtility = new BaseUrlUtility(new HttpContextAccessor());
+
         public long ProductCategoryID { get; set; }
         public string? CategoryName { get; set; }
         public string? CategoryDescription { get; set; }
+        public string? ImageUrl { 
+            get => imageUrl;
+            set => imageUrl = (string.IsNullOrEmpty(value)) ? string.Empty : $"{baseUrlUtility.GetBaseUrl()}/{value}";
+        }
 
         // Navprop
-        public List<string>? Products { get; set; }
+        public IEnumerable<Product>? Products { get; set; }
     }
 }

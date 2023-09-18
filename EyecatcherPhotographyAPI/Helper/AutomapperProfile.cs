@@ -10,7 +10,8 @@ namespace EyecatcherPhotographyAPI.Helper
         public AutomapperProfile()
         {
             CreateMap<ProductCategory, ProductCategoryResponse>()
-                .ForMember(d => d.Products, o => o.MapFrom(s => s.Products.Select(x => x.ProductName)));
+                .ForMember(d => d.Products, o => o.MapFrom(s => s.Products.Select(x => new Product { ProductName = x.ProductName})));
+                
 
             //CreateMap<PaginationFilterRequest, PaginationFilterResponse<object>>()
             //    .ForMember(d => d.PageNumber, o => o.MapFrom(s => s.PageNumber))
