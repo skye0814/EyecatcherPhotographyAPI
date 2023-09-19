@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EyecatcherPhotographyAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class UserController : ControllerBase
     {
         private readonly UserManager<IdentityUser> userManager;
@@ -132,7 +132,7 @@ namespace EyecatcherPhotographyAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] UserWebRequest user)
+        public async Task<IActionResult> Register([FromBody] UserWebRequest user)
         {
             try
             {
@@ -212,7 +212,7 @@ namespace EyecatcherPhotographyAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AuthenticationResponse>> CreateBearerToken([FromBody] AuthenticationRequest request)
+        public async Task<ActionResult<AuthenticationResponse>> Login([FromBody] AuthenticationRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Invalid model object");

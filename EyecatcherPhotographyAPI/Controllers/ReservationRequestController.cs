@@ -8,7 +8,7 @@ using System.Linq;
 namespace EyecatcherPhotographyAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class ReservationRequestController : ControllerBase
     {
         private readonly IRepositoryWrapper repositoryWrapper;

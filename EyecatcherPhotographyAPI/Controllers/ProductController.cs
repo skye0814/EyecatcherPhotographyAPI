@@ -14,7 +14,7 @@ namespace EyecatcherPhotographyAPI.Controllers
 {
     [Authorize(Roles = "Administrator, Customer")]
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class ProductController : ControllerBase
     {
         private readonly IRepositoryWrapper repository;
