@@ -5,9 +5,15 @@ using Core.WebModel.Response;
 using EyecatcherPhotography.Services;
 using Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace EyecatcherPhotographyAPI.Controllers
 {
@@ -18,15 +24,66 @@ namespace EyecatcherPhotographyAPI.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IAuthenticationService authService;
+        private readonly IConfiguration configuration;
 
         public UserController(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IAuthenticationService authService)
+            IAuthenticationService authService,
+            IConfiguration configuration)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.authService = authService;
+            this.configuration = configuration;
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            try
+            {
+                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+                var key = hmac.Key;
+                var handler = new JwtSecurityTokenHandler();
+                var validations = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+                var claims = handler.ValidateToken(token, validations, out var tokenSecure);
+
+                // The user ID is stored in 3rd index of the claim array. The position might change
+                // if we change the creation of token in AuthenticationService.cs, always debug
+                // if we want to look for the user ID claim
+                var nameIdentifier = claims.Claims.ToArray()[3].Value;
+
+                var user = await userManager.FindByIdAsync(nameIdentifier);
+
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                return Ok(new UserWebResponse()
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    
+                    // This will only return the first role, the user must only have 1 role
+                    Role = userManager.GetRolesAsync(user).Result.First()
+                });
+
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [Authorize(Roles = "Administrator")]
@@ -114,6 +171,15 @@ namespace EyecatcherPhotographyAPI.Controllers
                 if (userDb == null && !role)
                 {
                     throw new Exception("User or role does not exist"); 
+                }
+
+                // Set 1:1 ratio for user and role
+                var userRole = await userManager.GetRolesAsync(userDb);
+
+                if (userRole.Count != 0)
+                {
+                    // Implement deletion of role here and replace with the role to be assigned
+                    throw new NotImplementedException();
                 }
 
                 var result = await userManager.AddToRoleAsync(userDb, roleName);

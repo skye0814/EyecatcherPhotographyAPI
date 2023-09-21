@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using Infrastructure.Helper;
 using Core.Helper;
+using Microsoft.IdentityModel.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -84,6 +85,7 @@ builder.Services
             )
         };
     });
+IdentityModelEventSource.ShowPII = true;
 
 
 //Services injection and repository wrapper
