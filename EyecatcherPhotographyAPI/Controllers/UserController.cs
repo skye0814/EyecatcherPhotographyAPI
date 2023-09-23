@@ -24,17 +24,20 @@ namespace EyecatcherPhotographyAPI.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IAuthenticationService authService;
+        private readonly IUserService userService;
         private readonly IConfiguration configuration;
 
         public UserController(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IAuthenticationService authService,
+            IUserService userService,
             IConfiguration configuration)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.authService = authService;
+            this.userService = userService;
             this.configuration = configuration;
         }
 
@@ -74,9 +77,7 @@ namespace EyecatcherPhotographyAPI.Controllers
                     Id = user.Id,
                     UserName = user.UserName,
                     Email = user.Email,
-                    
-                    // This will only return the first role, the user must only have 1 role
-                    Role = userManager.GetRolesAsync(user).Result.First()
+                    Role = userManager.GetRolesAsync(user).Result.DefaultIfEmpty("").First()
                 });
 
             }
@@ -138,15 +139,7 @@ namespace EyecatcherPhotographyAPI.Controllers
         {
             try
             {
-                var userDb = await userManager.FindByIdAsync(user.Id);
-                var role = await roleManager.RoleExistsAsync(user.RoleName);
-
-                if (userDb == null && !role)
-                {
-                    return NotFound("User or role not found");
-                }
-
-                var result = await userManager.AddToRoleAsync(userDb, user.RoleName);
+                var result = await userService.AssignRole(user.Id, user.RoleName);
 
                 if(!result.Succeeded)
                 {
@@ -158,42 +151,6 @@ namespace EyecatcherPhotographyAPI.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        private async Task<IdentityResult> AssignRole(string id, string roleName)
-        {
-            try
-            {
-                var userDb = await userManager.FindByIdAsync(id);
-                var role = await roleManager.RoleExistsAsync(roleName);
-
-                if (userDb == null && !role)
-                {
-                    throw new Exception("User or role does not exist"); 
-                }
-
-                // Set 1:1 ratio for user and role
-                var userRole = await userManager.GetRolesAsync(userDb);
-
-                if (userRole.Count != 0)
-                {
-                    // Implement deletion of role here and replace with the role to be assigned
-                    throw new NotImplementedException();
-                }
-
-                var result = await userManager.AddToRoleAsync(userDb, roleName);
-
-                if (!result.Succeeded)
-                {
-                    throw new Exception($"Adding role not succeeded: {result.Errors}");
-                }
-
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"There was an error occured on assigning role: {ex.Message}");
             }
         }
 
@@ -223,12 +180,10 @@ namespace EyecatcherPhotographyAPI.Controllers
                     return BadRequest(result.Errors);
 
                 var createdUser = await userManager.FindByNameAsync(user.UserName);
-
-                var isRoleAssigned = await AssignRole(createdUser.Id, "Customer");
+                var isRoleAssigned = await userService.AssignRole(createdUser.Id, "Customer"); 
 
                 if (!isRoleAssigned.Succeeded)
                     return BadRequest(isRoleAssigned.Errors);
-
 
                 user.Password = null;
                 return CreatedAtAction("GetUser", new { userName = user.UserName }, user);
@@ -249,7 +204,8 @@ namespace EyecatcherPhotographyAPI.Controllers
                     {
                         Id = x.Id,
                         UserName = x.UserName,
-                        Email = x.Email
+                        Email = x.Email,
+                        Role = userManager.GetRolesAsync(x).Result.DefaultIfEmpty("").First(),
                     })
                     .ToListAsync();
 

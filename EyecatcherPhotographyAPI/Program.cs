@@ -92,6 +92,7 @@ IdentityModelEventSource.ShowPII = true;
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<BaseUrlUtility>();
 builder.Services.ConfigureRepositoryWrapper();
