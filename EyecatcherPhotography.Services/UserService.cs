@@ -1,9 +1,14 @@
 ﻿using Core.Interface.Services;
+using Core.WebModel.Response;
 using Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,13 +18,53 @@ namespace EyecatcherPhotography.Services
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly IConfiguration configuration;
 
         public UserService(
-            UserManager<IdentityUser> userManager, 
-            RoleManager<IdentityRole> roleManager)
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager,
+            IConfiguration configuration)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.configuration = configuration;
+        }
+
+        public async Task<UserWebResponse> GetUserFromToken(string token)
+        {
+            try
+            {
+                var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+                var key = hmac.Key;
+                var handler = new JwtSecurityTokenHandler();
+                var validations = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+                var claims = handler.ValidateToken(token, validations, out var tokenSecure);
+
+                // The user ID is stored in 3rd index of the claim array. The position might change
+                // if we change the creation of token in AuthenticationService.cs, always debug
+                // if we want to look for the user ID claim
+                var nameIdentifier = claims.Claims.ToArray()[3].Value;
+
+                var user = await userManager.FindByIdAsync(nameIdentifier);
+
+                return new UserWebResponse()
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Role = userManager.GetRolesAsync(user).Result.DefaultIfEmpty("").First()
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error occured in User Service: {ex.Message}");
+            }
         }
 
         public async Task<IdentityResult> AssignRole(string id, string roleName)

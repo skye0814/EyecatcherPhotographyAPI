@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Core.WebModel.Response;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace Core.Interface.Services
     public interface IUserService
     {
         Task<IdentityResult> AssignRole(string userId, string roleName);
+        Task<UserWebResponse> GetUserFromToken(string token);
     }
 }

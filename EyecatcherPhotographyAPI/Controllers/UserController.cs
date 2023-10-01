@@ -47,39 +47,14 @@ namespace EyecatcherPhotographyAPI.Controllers
         {
             try
             {
-                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
-                var key = hmac.Key;
-                var handler = new JwtSecurityTokenHandler();
-                var validations = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-                var claims = handler.ValidateToken(token, validations, out var tokenSecure);
-
-                // The user ID is stored in 3rd index of the claim array. The position might change
-                // if we change the creation of token in AuthenticationService.cs, always debug
-                // if we want to look for the user ID claim
-                var nameIdentifier = claims.Claims.ToArray()[3].Value;
-
-                var user = await userManager.FindByIdAsync(nameIdentifier);
+                var user = await userService.GetUserFromToken(Request.Headers["Authorization"].ToString().Replace("Bearer ", ""));
 
                 if (user == null)
                 {
                     return NotFound("User not found");
                 }
 
-                return Ok(new UserWebResponse()
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    Role = userManager.GetRolesAsync(user).Result.DefaultIfEmpty("").First()
-                });
-
+                return Ok(user);
             }
             catch(Exception ex)
             {
@@ -234,25 +209,38 @@ namespace EyecatcherPhotographyAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AuthenticationResponse>> Login([FromBody] AuthenticationRequest request)
+        public async Task<IActionResult> Login([FromBody] AuthenticationRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest("Invalid model object");
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest("Invalid model object");
 
-            var user = await userManager.FindByNameAsync(request.UserName);
+                var user = await userManager.FindByNameAsync(request.UserName);
 
-            if (user == null)
-                return BadRequest("Username does not exist");
+                if (user == null)
+                    return BadRequest("Username does not exist");
 
-            var isPasswordValid = await userManager.CheckPasswordAsync(user, request.Password);
+                var isPasswordValid = await userManager.CheckPasswordAsync(user, request.Password);
 
-            if (!isPasswordValid)
-                return BadRequest("Password is incorrect or invalid");
+                if (!isPasswordValid)
+                    return BadRequest("Password is incorrect or invalid");
 
-            var token = await authService.CreateTokenAsync(user);
+                var token = await authService.CreateTokenAsync(user);
+                var userFromToken = await userService.GetUserFromToken(token.Token);
 
-            return Ok(token);
+                if (userFromToken == null)
+                    return NotFound("User not found from the provided token");
+
+                return Ok(new {
+                    user = userFromToken,
+                    token = token.Token
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Internal server error: {ex.Message}");
+            }
         }
-
     }
 }
