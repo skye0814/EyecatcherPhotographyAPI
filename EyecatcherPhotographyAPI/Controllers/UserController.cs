@@ -41,7 +41,6 @@ namespace EyecatcherPhotographyAPI.Controllers
             this.configuration = configuration;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetCurrentUser()
         {
@@ -51,14 +50,14 @@ namespace EyecatcherPhotographyAPI.Controllers
 
                 if (user == null)
                 {
-                    return NotFound("User not found");
+                    return Unauthorized("User not found");
                 }
 
                 return Ok(user);
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return Unauthorized("Token is invalid");
             }
         }
 
