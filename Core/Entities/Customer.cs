@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,7 +11,7 @@ namespace Core.Entities
 {
     public class Customer
     {
-        public Guid CustomerID { get; set; }
+        public string CustomerID { get; set; }
         public string? FirstName { get; set; }
         public string? MiddleName { get; set;}
         public string? LastName { get; set; }
@@ -22,8 +23,8 @@ namespace Core.Entities
         public IEnumerable<TransactionHistory>? TransactionHistories { get; set; }
 
         [ForeignKey("Id")]
-        public virtual ApplicationUser? AspNetUsers { get; set; }
-        public Guid? AspNetUsersId { get; set; }
+        public virtual IdentityUser? ApplicationUser { get; set; }
+        public string? Id { get; set; }
        
 
     }

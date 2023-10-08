@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20231007155231_ApplicationUserInCustomerEntity")]
+    partial class ApplicationUserInCustomerEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.19");
@@ -46,7 +48,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid?>("CartID")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CustomerID")
+                    b.Property<Guid?>("CustomerID")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateCreated")
@@ -96,7 +98,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.Customer", b =>
                 {
-                    b.Property<string>("CustomerID")
+                    b.Property<Guid>("CustomerID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Address")
@@ -127,7 +130,7 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            CustomerID = "ffa913a6-5448-4d58-9ad7-ed7729d31345",
+                            CustomerID = new Guid("ffa913a6-5448-4d58-9ad7-ed7729d31345"),
                             FirstName = "John Matthew",
                             Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
                             LastName = "Arquelola",
@@ -499,7 +502,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CustomerID")
+                    b.Property<Guid?>("CustomerID")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
@@ -573,10 +576,6 @@ namespace Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -628,22 +627,20 @@ namespace Infrastructure.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
-
                     b.HasData(
                         new
                         {
                             Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5479a485-a469-4bd5-9eaf-a6b8f54b2ce0",
+                            ConcurrencyStamp = "ce1d4e8d-ddb6-4116-b013-ab34ff26cda9",
                             Email = "skye0814@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "SKYE0814@GMAIL.COM",
                             NormalizedUserName = "SKYE0814",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGpTWmfyXEqDwihMT5BMozaJvI/94jLTbLNXMjAVygTPdsDIn0CXuGY9Bcr3kPGzHw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJZssMAyVnhssrnkdCP0ZcsZXT75XI1Vy8UCxsGhKv3Bv8HYY53eeAcvBGcIpcYApQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0f7cdd78-a14a-4c52-baa1-39cad8f20091",
+                            SecurityStamp = "7bad81ce-d9a7-4593-bd49-d368fba83cbb",
                             TwoFactorEnabled = false,
                             UserName = "skye0814"
                         });
@@ -733,18 +730,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Core.Entities.ApplicationUser", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<string>("CustomerID")
-                        .HasColumnType("TEXT");
-
-                    b.HasIndex("CustomerID");
-
-                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Core.Entities.BillingDetails", b =>
@@ -857,15 +842,6 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Core.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("Core.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerID");
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Core.Entities.BillingDetails", b =>

@@ -15,6 +15,7 @@ namespace Infrastructure.Data.Repository
         private IBillingDetailsRepository billingDetails;
         private IProductCategoryRepository productCategoryRepository;
         private IProductRepository productRepository;
+        private ICustomerRepository customerRepository;
 
         public RepositoryWrapper(RepositoryContext repositoryContext)
         {
@@ -58,6 +59,19 @@ namespace Infrastructure.Data.Repository
 
                 return this.productCategoryRepository;
             }
+        }
+
+        public ICustomerRepository Customer
+        {
+            get 
+            {
+                if(this.customerRepository == null)
+                {
+                    customerRepository = new CustomerRepository(repositoryContext);
+                }
+                
+                return this.customerRepository;
+            } 
         }
 
         public void Save()

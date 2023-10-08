@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20231007130716_AddAdminPersonalDetails")]
+    partial class AddAdminPersonalDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.19");
@@ -46,7 +48,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid?>("CartID")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("CustomerID")
+                    b.Property<Guid?>("CustomerID")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateCreated")
@@ -96,7 +98,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.Customer", b =>
                 {
-                    b.Property<string>("CustomerID")
+                    b.Property<Guid>("CustomerID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Address")
@@ -127,7 +130,7 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            CustomerID = "ffa913a6-5448-4d58-9ad7-ed7729d31345",
+                            CustomerID = new Guid("ffa913a6-5448-4d58-9ad7-ed7729d31345"),
                             FirstName = "John Matthew",
                             Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
                             LastName = "Arquelola",
@@ -499,7 +502,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CustomerID")
+                    b.Property<Guid?>("CustomerID")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
@@ -635,15 +638,15 @@ namespace Infrastructure.Migrations
                         {
                             Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5479a485-a469-4bd5-9eaf-a6b8f54b2ce0",
+                            ConcurrencyStamp = "608e21e1-9bda-438b-b11b-238203ca4a35",
                             Email = "skye0814@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "SKYE0814@GMAIL.COM",
                             NormalizedUserName = "SKYE0814",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGpTWmfyXEqDwihMT5BMozaJvI/94jLTbLNXMjAVygTPdsDIn0CXuGY9Bcr3kPGzHw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGd904MgPqX3UblC2tBoiZ7Z7QnFyMhg6MVl2yKyM1ou+byaE9GbvkDXNGHA3CMPmw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0f7cdd78-a14a-4c52-baa1-39cad8f20091",
+                            SecurityStamp = "59e8bab4-ed2c-4a5a-b5d4-3e914b22fc1a",
                             TwoFactorEnabled = false,
                             UserName = "skye0814"
                         });
@@ -739,11 +742,6 @@ namespace Infrastructure.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<string>("CustomerID")
-                        .HasColumnType("TEXT");
-
-                    b.HasIndex("CustomerID");
-
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
@@ -777,13 +775,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.Customer", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ApplicationUser")
+                    b.HasOne("Core.Entities.ApplicationUser", "AspNetUsers")
                         .WithMany()
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ApplicationUser");
+                    b.Navigation("AspNetUsers");
                 });
 
             modelBuilder.Entity("Core.Entities.Product", b =>
@@ -857,15 +855,6 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Core.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("Core.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerID");
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Core.Entities.BillingDetails", b =>

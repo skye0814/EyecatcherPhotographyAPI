@@ -20,7 +20,7 @@ namespace Core.Entities
 
         [ForeignKey("CustomerID")]
         public virtual Customer? Customer { get; set; }
-        public Guid? CustomerID { get; set; }
+        public string? CustomerID { get; set; }
 
         [ForeignKey("AppointmentPlaceID")]
         public virtual AppointmentPlace? AppointmentPlace { get; set; }

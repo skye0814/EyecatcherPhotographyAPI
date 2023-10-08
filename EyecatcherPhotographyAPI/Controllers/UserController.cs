@@ -203,7 +203,8 @@ namespace EyecatcherPhotographyAPI.Controllers
             {
                 Id = userDb.Id,
                 UserName = userDb.UserName,
-                Email = userDb.Email
+                Email = userDb.Email,
+                Role = userManager.GetRolesAsync(userDb).Result.DefaultIfEmpty("").First()
             });
         }
 

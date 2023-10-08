@@ -11,6 +11,7 @@ namespace Core.Interface.Repository
         IBillingDetailsRepository BillingDetails { get; }
         IProductCategoryRepository ProductCategory { get; }
         IProductRepository Product { get; }
+        ICustomerRepository Customer { get; }
         void Save();
     }
 }

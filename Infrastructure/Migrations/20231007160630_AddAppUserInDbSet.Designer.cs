@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20231007160630_AddAppUserInDbSet")]
+    partial class AddAppUserInDbSet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.19");
@@ -635,15 +637,15 @@ namespace Infrastructure.Migrations
                         {
                             Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5479a485-a469-4bd5-9eaf-a6b8f54b2ce0",
+                            ConcurrencyStamp = "ca622645-65b6-46e9-af63-706e125f2d4d",
                             Email = "skye0814@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "SKYE0814@GMAIL.COM",
                             NormalizedUserName = "SKYE0814",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGpTWmfyXEqDwihMT5BMozaJvI/94jLTbLNXMjAVygTPdsDIn0CXuGY9Bcr3kPGzHw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMZfxVZWzN4r7fCVgNkISYSTPx5yCVfQnhrgTOw1H/mGP6U5rv7IgpiGjQXcliokjw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0f7cdd78-a14a-4c52-baa1-39cad8f20091",
+                            SecurityStamp = "219af195-851f-4a6c-8fe5-0d0244aef53b",
                             TwoFactorEnabled = false,
                             UserName = "skye0814"
                         });

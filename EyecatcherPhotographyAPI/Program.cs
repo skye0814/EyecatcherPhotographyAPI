@@ -22,6 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddLogging();
 
 // Add CORS service
 builder.Services.AddCors(options =>
@@ -93,8 +94,9 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IProductCategoryService, ProductCategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddSingleton<BaseUrlUtility>();
+builder.Services.AddScoped<BaseUrlUtility>();
 builder.Services.ConfigureRepositoryWrapper();
 
 

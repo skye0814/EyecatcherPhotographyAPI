@@ -18,6 +18,7 @@ namespace Infrastructure.Data.Repository
         DbSet<Product> Products { get; set; }
         DbSet<ProductCategory> ProductCategories { get; set; }
         DbSet<TransactionHistory> TransactionHistory { get; set; }
+        DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -46,7 +47,7 @@ namespace Infrastructure.Data.Repository
                     .HasForeignKey(x => x.CustomerID)
                     .HasPrincipalKey(x => x.CustomerID);
 
-                p.HasOne(x => x.AspNetUsers);
+                p.HasOne(x => x.ApplicationUser);
             });
 
             SeedData(modelBuilder);
@@ -68,11 +69,30 @@ namespace Infrastructure.Data.Repository
             };
             modelBuilder.Entity<IdentityUser>().HasData(user);
 
-            
-            modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole { Id = "6ed57acf-cb38-4df4-ac5f-be45115fd783", Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
-                new IdentityRole { Id = "38b13138-2eb6-415b-b1d4-c36f6c6fdee4", Name = "Customer", NormalizedName = "CUSTOMER" }
+            // Comment this whenever the migration fails, it means it already exist in the db and
+            // the seeder is trying again to add these values
+            //modelBuilder.Entity<IdentityRole>().HasData(
+            //    new IdentityRole { Id = "6ed57acf-cb38-4df4-ac5f-be45115fd783", Name = "Administrator", NormalizedName = "ADMINISTRATOR" },
+            //    new IdentityRole { Id = "38b13138-2eb6-415b-b1d4-c36f6c6fdee4", Name = "Customer", NormalizedName = "CUSTOMER" }
+            //);
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
+                {
+                    UserId = user.Id,
+                    RoleId = "6ed57acf-cb38-4df4-ac5f-be45115fd783" // Admin Role
+                }
             );
+
+            // Personal details for the administrator seed
+            modelBuilder.Entity<Customer>().HasData(new Customer
+            {
+                CustomerID = "ffa913a6-5448-4d58-9ad7-ed7729d31345",
+                Id = user.Id, 
+                FirstName = "John Matthew",
+                MiddleName = "Cruz",
+                LastName = "Arquelola"
+            });
 
             modelBuilder.Entity<ProductCategory>().HasData(
                 new ProductCategory { ProductCategoryID = 1, CategoryName = "Birthday Services", CategoryDescription = "EyeCatch your birthday with wonderful shots", ImageUrl = "images/productcategories/birthday1.jpg" },

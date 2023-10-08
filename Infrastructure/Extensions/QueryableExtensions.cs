@@ -23,7 +23,6 @@ namespace Infrastructure.Extensions
 
         public static IQueryable<T> Sort<T>(this IQueryable<T> query, string orderBy, bool isAscending)
         {
-            IQueryable<T> result;
             if (isAscending)
             {
                 return query.OrderBy(ca => ca.GetType().GetProperty(orderBy).GetValue(ca, null));
