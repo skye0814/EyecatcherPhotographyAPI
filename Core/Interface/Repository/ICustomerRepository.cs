@@ -10,5 +10,6 @@ namespace Core.Interface.Repository
     public interface ICustomerRepository
     {
         Customer? GetCustomerByAppUserId(string Id);
+        Task CreateCustomer(Customer customer);
     }
 }

@@ -3,6 +3,7 @@ using Core.Interface.Services;
 using Core.WebModel.Request;
 using Core.WebModel.Response;
 using EyecatcherPhotography.Services;
+using EyecatcherPhotography.Services.Exceptions;
 using Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
@@ -25,6 +26,7 @@ namespace EyecatcherPhotographyAPI.Controllers
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IAuthenticationService authService;
         private readonly IUserService userService;
+        private readonly ICustomerService customerService;
         private readonly IConfiguration configuration;
 
         public UserController(
@@ -32,12 +34,14 @@ namespace EyecatcherPhotographyAPI.Controllers
             RoleManager<IdentityRole> roleManager,
             IAuthenticationService authService,
             IUserService userService,
+            ICustomerService customerService,
             IConfiguration configuration)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.authService = authService;
             this.userService = userService;
+            this.customerService = customerService;
             this.configuration = configuration;
         }
 
@@ -129,7 +133,7 @@ namespace EyecatcherPhotographyAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] UserWebRequest user)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest user)
         {
             try
             {
@@ -159,8 +163,22 @@ namespace EyecatcherPhotographyAPI.Controllers
                 if (!isRoleAssigned.Succeeded)
                     return BadRequest(isRoleAssigned.Errors);
 
+                var customer = new Customer()
+                {
+                    Id = createdUser.Id,
+                    FirstName = user.FirstName,
+                    MiddleName = user.MiddleName,
+                    LastName = user.LastName
+                };
+
+                await customerService.InsertCustomer(customer);
+
                 user.Password = null;
                 return CreatedAtAction("GetUser", new { userName = user.UserName }, user);
+            }
+            catch(BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch(Exception ex)
             {
@@ -199,6 +217,8 @@ namespace EyecatcherPhotographyAPI.Controllers
             if (userDb == null)
                 return NotFound("This user does not exist.");
 
+
+            // Add here CustomerResponse instead
             return Ok(new UserWebResponse()
             {
                 Id = userDb.Id,

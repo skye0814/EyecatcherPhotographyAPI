@@ -29,6 +29,17 @@ namespace EyecatcherPhotography.Services
             this.userManager = userManager;
         }
 
+        public async Task InsertCustomer(Customer customer)
+        {
+            var appUser = await userManager.FindByIdAsync(customer.Id);
+            if (appUser == null)
+            {
+                throw new BadRequestException("Cannot add customer because the ID provided does not exist in App Users");
+            }
+
+            await repository.Customer.CreateCustomer(customer);
+        }
+
         public async Task<CustomerResponse> GetCustomerAppUserInfoByAppUserId(string appUserId)
         {
             var result = new CustomerResponse();
@@ -42,23 +53,26 @@ namespace EyecatcherPhotography.Services
             {
                 throw new NotFoundException("User does not have customer information");
             }
-            result = new CustomerResponse()
+            if (userInfo != null && customer != null)
             {
-                CustomerID = customer.CustomerID,
-                FirstName = customer.FirstName,
-                MiddleName = customer.MiddleName,
-                LastName = customer.LastName,
-                Address = customer.Address,
-                ContactNumber = customer.ContactNumber,
-                ApplicationUser = new UserWebResponse()
+                result = new CustomerResponse()
                 {
-                    Id = appUserId,
-                    Email = userInfo.Email,
-                    UserName = userInfo.UserName,
-                    Role = userManager.GetRolesAsync(userInfo).Result.DefaultIfEmpty("").First(),
-                }
-            };
-
+                    CustomerID = customer.CustomerID,
+                    FirstName = customer.FirstName,
+                    MiddleName = customer.MiddleName,
+                    LastName = customer.LastName,
+                    Address = customer.Address,
+                    ContactNumber = customer.ContactNumber,
+                    ApplicationUser = new UserWebResponse()
+                    {
+                        Id = appUserId,
+                        Email = userInfo.Email,
+                        UserName = userInfo.UserName,
+                        Role = userManager.GetRolesAsync(userInfo).Result.DefaultIfEmpty("").First(),
+                    }
+                };
+            }
+            
             return result;
         }
     }

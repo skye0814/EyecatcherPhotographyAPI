@@ -15,6 +15,12 @@ namespace Infrastructure.Data.Repository
         {
         }
 
+        public async Task CreateCustomer(Customer customer)
+        {
+            await CreateAsync(customer);
+            await SaveAsync();
+        }
+
         public Customer? GetCustomerByAppUserId(string Id)
         {
             return Query().Where(x => x.Id == Id)
