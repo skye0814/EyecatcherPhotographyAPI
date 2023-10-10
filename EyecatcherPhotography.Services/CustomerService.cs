@@ -31,13 +31,22 @@ namespace EyecatcherPhotography.Services
 
         public async Task InsertCustomer(Customer customer)
         {
-            var appUser = await userManager.FindByIdAsync(customer.Id);
-            if (appUser == null)
+            try
             {
-                throw new BadRequestException("Cannot add customer because the ID provided does not exist in App Users");
-            }
+                var appUser = await userManager.FindByIdAsync(customer.Id);
+                if (appUser == null)
+                {
+                    throw new BadRequestException("Cannot add customer because the ID provided does not exist in App Users");
+                }
 
-            await repository.Customer.CreateCustomer(customer);
+                await repository.Customer.CreateCustomer(customer);
+            }
+            catch (Exception ex)
+            {
+                logger.LogInformation(ex.Message);
+                throw;
+            }
+            
         }
 
         public async Task<CustomerResponse> GetCustomerAppUserInfoByAppUserId(string appUserId)

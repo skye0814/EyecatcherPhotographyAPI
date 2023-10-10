@@ -1,4 +1,5 @@
-﻿using Core.WebModel.Response;
+﻿using Core.WebModel.Request;
+using Core.WebModel.Response;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace Core.Interface.Services
     {
         Task<IdentityResult> AssignRole(string userId, string roleName);
         Task<UserWebResponse> GetUserFromToken(string token);
+        Task<string> InsertAppUserAndCustomer(RegisterRequest request);
     }
 }

@@ -23,7 +23,7 @@ namespace EyecatcherPhotographyAPI.Controllers
             this.customerService = customerService;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetCustomer")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetCustomer(string id)

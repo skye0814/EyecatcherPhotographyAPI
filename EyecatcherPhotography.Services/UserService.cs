@@ -1,8 +1,12 @@
-﻿using Core.Interface.Services;
+﻿using Core.Entities;
+using Core.Interface.Services;
+using Core.WebModel.Request;
 using Core.WebModel.Response;
+using EyecatcherPhotography.Services.Exceptions;
 using Infrastructure.Data.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -18,16 +22,22 @@ namespace EyecatcherPhotography.Services
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly ICustomerService customerService;
         private readonly IConfiguration configuration;
+        private readonly ILogger<UserService> logger;
 
         public UserService(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IConfiguration configuration)
+            ICustomerService customerService,
+            IConfiguration configuration,
+            ILogger<UserService> logger)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.customerService = customerService;
             this.configuration = configuration;
+            this.logger = logger;
         }
 
         public async Task<UserWebResponse> GetUserFromToken(string token)
@@ -66,6 +76,61 @@ namespace EyecatcherPhotography.Services
                 throw new Exception($"Error occured in User Service: {ex.Message}");
             }
         }
+
+        public async Task<string> InsertAppUserAndCustomer(RegisterRequest request)
+        {
+            try
+            {
+                string id = Guid.NewGuid().ToString();
+                var existingUsername = await userManager.FindByNameAsync(request.UserName);
+
+                if (existingUsername != null)
+                    throw new BadRequestException("Username already exists");
+
+                var appUser = await userManager.CreateAsync(
+                    new IdentityUser()
+                    {
+                        Id = id,
+                        UserName = request.UserName,
+                        Email = request.Email
+                    },
+                    request.Password
+                );
+
+                if (!appUser.Succeeded)
+                {
+                    var errorMessage = appUser.Errors.First().Description;
+                    throw new BadRequestException(errorMessage);
+                }
+
+                var createdAppUser = await userManager.FindByNameAsync(request.UserName);
+                var isRoleAssigned = await AssignRole(createdAppUser.Id, "Customer");
+
+                if (!isRoleAssigned.Succeeded)
+                {
+                    var errorMessage = isRoleAssigned.Errors.First().Description;
+                    throw new BadRequestException(errorMessage);
+                }
+
+                var customer = new Customer()
+                {
+                    Id = id,
+                    FirstName = request.FirstName,
+                    MiddleName = request.MiddleName,
+                    LastName = request.LastName,
+                    CustomerID = Guid.NewGuid().ToString(),
+                };
+
+                await customerService.InsertCustomer(customer);
+
+                return createdAppUser.Id;
+            }
+            catch (Exception ex)
+            {
+                logger.LogInformation(ex.Message);
+                throw;
+            }
+         }
 
         public async Task<IdentityResult> AssignRole(string id, string roleName)
         {

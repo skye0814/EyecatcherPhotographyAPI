@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20231010115439_PutKeyInCustomerID")]
+    partial class PutKeyInCustomerID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.19");
@@ -125,16 +127,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("Id");
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            CustomerID = "ffa913a6-5448-4d58-9ad7-ed7729d31345",
-                            FirstName = "John Matthew",
-                            Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
-                            LastName = "Arquelola",
-                            MiddleName = "Cruz"
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Product", b =>
@@ -180,269 +172,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("ProductCategoryID");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            ProductID = 1L,
-                            FreeText1 = "1 Photographer;Pre Birthday Shoot;Soft Copy;On The Day Event Coverage",
-                            Price = 4500.0,
-                            ProductCategoryID = 1L,
-                            ProductName = "PACKAGE 1 (PHOTO)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 2L,
-                            FreeText1 = "2 Photographers;Pre Birthday Shoot;Soft Copy;On The Day Event Coverage",
-                            Price = 6500.0,
-                            ProductCategoryID = 1L,
-                            ProductName = "PACKAGE 2 (PHOTO)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 3L,
-                            FreeText1 = "1 Photographer;1 Videographer;Pre Birthday Shoot;4-5 minutes Video Highlights;Soft Copy;On The Day Event Coverage",
-                            Price = 8500.0,
-                            ProductCategoryID = 1L,
-                            ProductName = "PACKAGE 3 (PHOTO & VIDEO)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 4L,
-                            FreeText1 = "2 Photographers;1 videographer;Pre Debut or Birthday Shoot;Soft Copy;4-5 minutes Video Highlights;Unlimited Shots Photo Booth (2 hours);20 pages Hardbound Photo Album;Hair and Make Up Artist;On The Day Event Coverage",
-                            Price = 22000.0,
-                            ProductCategoryID = 1L,
-                            ProductName = "ALL IN PACKAGE",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 5L,
-                            FreeText1 = "",
-                            Price = 3000.0,
-                            ProductCategoryID = 2L,
-                            ProductName = "PACKAGE 1 (PHOTO)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 6L,
-                            FreeText1 = "",
-                            Price = 5500.0,
-                            ProductCategoryID = 2L,
-                            ProductName = "PACKAGE 2 (PHOTO)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 7L,
-                            FreeText1 = "",
-                            Price = 7500.0,
-                            ProductCategoryID = 2L,
-                            ProductName = "PACKAGE 3 (PHOTO & VIDEO)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 8L,
-                            FreeText1 = "",
-                            Price = 5500.0,
-                            ProductCategoryID = 2L,
-                            ProductName = "PACKAGE 4 (PHOTO+PHOTOBOOTH)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 9L,
-                            FreeText1 = "",
-                            Price = 6500.0,
-                            ProductCategoryID = 3L,
-                            ProductName = "PACKAGE A (PHOTO)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 10L,
-                            FreeText1 = "",
-                            Price = 12500.0,
-                            ProductCategoryID = 3L,
-                            ProductName = "PACKAGE B1 (PHOTO & VIDEO)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 11L,
-                            FreeText1 = "",
-                            Price = 14000.0,
-                            ProductCategoryID = 3L,
-                            ProductName = "PACKAGE B2 (PHOTO & VIDEO)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 12L,
-                            FreeText1 = "",
-                            Price = 17000.0,
-                            ProductCategoryID = 3L,
-                            ProductName = "PACKAGE C1 (PHOTO+VIDEO+ALBUM)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 13L,
-                            FreeText1 = "",
-                            Price = 18500.0,
-                            ProductCategoryID = 3L,
-                            ProductName = "PACKAGE C2 (PHOTO+VIDEO+ALBUM)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 14L,
-                            FreeText1 = "",
-                            Price = 17500.0,
-                            ProductCategoryID = 3L,
-                            ProductName = "PACKAGE D1 (PHOTO+VIDEO+HMUA)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 15L,
-                            FreeText1 = "",
-                            Price = 17500.0,
-                            ProductCategoryID = 3L,
-                            ProductName = "PACKAGE D2 (PHOTO+VIDEO+ALBUM)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 16L,
-                            FreeText1 = "",
-                            Price = 38000.0,
-                            ProductCategoryID = 3L,
-                            ProductName = "PACKAGE E (ALL IN)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 17L,
-                            FreeText1 = "",
-                            Price = 5000.0,
-                            ProductCategoryID = 4L,
-                            ProductName = "HAIR AND MAKE UP ARTIST A",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 18L,
-                            FreeText1 = "",
-                            Price = 12000.0,
-                            ProductCategoryID = 4L,
-                            ProductName = "HAIR AND MAKE UP ARTIST B",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 19L,
-                            FreeText1 = "",
-                            Price = 500.0,
-                            ProductCategoryID = 4L,
-                            ProductName = "BRIDESMAIDS HAIR AND MAKE UP",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 20L,
-                            FreeText1 = "",
-                            Price = 5000.0,
-                            ProductCategoryID = 4L,
-                            ProductName = "COORDINATOR",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 21L,
-                            FreeText1 = "",
-                            Price = 5000.0,
-                            ProductCategoryID = 4L,
-                            ProductName = "SOUNDS AND LIGHTS",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 22L,
-                            FreeText1 = "",
-                            Price = 5000.0,
-                            ProductCategoryID = 4L,
-                            ProductName = "EMCEE",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 23L,
-                            FreeText1 = "",
-                            Price = 4500.0,
-                            ProductCategoryID = 4L,
-                            ProductName = "40-PAGE PHOTO ALBUM IN HARDBOUND",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 24L,
-                            FreeText1 = "",
-                            Price = 2500.0,
-                            ProductCategoryID = 4L,
-                            ProductName = "20-PAGE PHOTO ALBUM IN HARDBOUND",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 25L,
-                            FreeText1 = "",
-                            Price = 6000.0,
-                            ProductCategoryID = 4L,
-                            ProductName = "SAME DAY EDIT (SDE EDITOR)",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 26L,
-                            FreeText1 = "",
-                            Price = 4000.0,
-                            ProductCategoryID = 4L,
-                            ProductName = "AERIAL DRONE SHOTS",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 27L,
-                            FreeText1 = "",
-                            Price = 700.0,
-                            ProductCategoryID = 4L,
-                            ProductName = "FLASH DRIVE",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 28L,
-                            FreeText1 = "",
-                            Price = 3000.0,
-                            ProductCategoryID = 4L,
-                            ProductName = "ADDITIONAL PHOTOGRAPHER",
-                            ProductTag = ""
-                        },
-                        new
-                        {
-                            ProductID = 29L,
-                            FreeText1 = "",
-                            Price = 4500.0,
-                            ProductCategoryID = 4L,
-                            ProductName = "ADDITIONAL VIDEOGRAPHER",
-                            ProductTag = ""
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.ProductCategory", b =>
@@ -463,36 +192,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("ProductCategoryID");
 
                     b.ToTable("ProductCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            ProductCategoryID = 1L,
-                            CategoryDescription = "EyeCatch your birthday with wonderful shots",
-                            CategoryName = "Birthday Services",
-                            ImageUrl = "images/productcategories/birthday1.jpg"
-                        },
-                        new
-                        {
-                            ProductCategoryID = 2L,
-                            CategoryDescription = "EyeCatch your beautiful kid of joy",
-                            CategoryName = "Christening Services",
-                            ImageUrl = "images/productcategories/christening1.jpg"
-                        },
-                        new
-                        {
-                            ProductCategoryID = 3L,
-                            CategoryDescription = "EyeCatch your wedding memories with your lifetime partner",
-                            CategoryName = "Wedding Services",
-                            ImageUrl = "images/productcategories/wedding1.jpg"
-                        },
-                        new
-                        {
-                            ProductCategoryID = 4L,
-                            CategoryDescription = "Want to see more? Click here for other EyeCatcher services",
-                            CategoryName = "Other Services",
-                            ImageUrl = "images/productcategories/others1.jpg"
-                        });
                 });
 
             modelBuilder.Entity("Core.Entities.TransactionHistory", b =>
@@ -631,24 +330,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "1675d12c-b261-4b01-995e-7357659c81c1",
-                            Email = "skye0814@gmail.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "SKYE0814@GMAIL.COM",
-                            NormalizedUserName = "SKYE0814",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKbW0AtC3ppM4c8U5lm1Cl/ZBTz4exS63yZCCrP9HehTcs+Hq/ay83tJwigP2koU0g==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "abb81e27-4101-4754-9913-9ec0af596d0b",
-                            TwoFactorEnabled = false,
-                            UserName = "skye0814"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -709,13 +390,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
-                            RoleId = "6ed57acf-cb38-4df4-ac5f-be45115fd783"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

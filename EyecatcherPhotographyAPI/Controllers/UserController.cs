@@ -140,41 +140,45 @@ namespace EyecatcherPhotographyAPI.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest("Invalid model object");
 
-                var existingUsername = await userManager.FindByNameAsync(user.UserName);
+                var appUserId = await userService.InsertAppUserAndCustomer(user);
 
-                if (existingUsername != null)
-                    return BadRequest("Username already exists");
+                return CreatedAtAction("GetCustomer", "Customer", new { id = appUserId });
+                //var existingUsername = await userManager.FindByNameAsync(user.UserName);
 
-                var result = await userManager.CreateAsync(
-                    new IdentityUser()
-                    {
-                        UserName = user.UserName,
-                        Email = user.Email
-                    },
-                    user.Password
-                );
+                //if (existingUsername != null)
+                //    return BadRequest("Username already exists");
 
-                if (!result.Succeeded)
-                    return BadRequest(result.Errors);
+                //var result = await userManager.CreateAsync(
+                //    new IdentityUser()
+                //    {
+                //        Id = Guid.NewGuid().ToString(),
+                //        UserName = user.UserName,
+                //        Email = user.Email
+                //    },
+                //    user.Password
+                //);
 
-                var createdUser = await userManager.FindByNameAsync(user.UserName);
-                var isRoleAssigned = await userService.AssignRole(createdUser.Id, "Customer"); 
+                //if (!result.Succeeded)
+                //    return BadRequest(result.Errors);
 
-                if (!isRoleAssigned.Succeeded)
-                    return BadRequest(isRoleAssigned.Errors);
+                //var createdUser = await userManager.FindByNameAsync(user.UserName);
+                //var isRoleAssigned = await userService.AssignRole(createdUser.Id, "Customer"); 
 
-                var customer = new Customer()
-                {
-                    Id = createdUser.Id,
-                    FirstName = user.FirstName,
-                    MiddleName = user.MiddleName,
-                    LastName = user.LastName
-                };
+                //if (!isRoleAssigned.Succeeded)
+                //    return BadRequest(isRoleAssigned.Errors);
 
-                await customerService.InsertCustomer(customer);
+                //var customer = new Customer()
+                //{
+                //    Id = createdUser.Id,
+                //    FirstName = user.FirstName,
+                //    MiddleName = user.MiddleName,
+                //    LastName = user.LastName
+                //};
 
-                user.Password = null;
-                return CreatedAtAction("GetUser", new { userName = user.UserName }, user);
+                //await customerService.InsertCustomer(customer);
+
+                //user.Password = null;
+
             }
             catch(BadRequestException ex)
             {

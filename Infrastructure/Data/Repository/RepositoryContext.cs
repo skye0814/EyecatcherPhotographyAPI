@@ -40,7 +40,8 @@ namespace Infrastructure.Data.Repository
 
             modelBuilder.Entity<Customer>(p =>
             {
-                p.HasKey(x => x.CustomerID);
+                p.HasIndex(x => x.CustomerID)
+                 .IsUnique();
 
                 p.HasMany(x => x.TransactionHistories)
                     .WithOne(x => x.Customer)
