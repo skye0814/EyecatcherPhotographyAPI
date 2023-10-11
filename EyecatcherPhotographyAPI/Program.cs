@@ -49,7 +49,7 @@ builder.Services.AddAutoMapper(typeof(AutomapperProfile));
 //     x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDbContext<RepositoryContext>(x => 
-    x.UseSqlite(builder.Configuration.GetConnectionString("DefaultSqliteConnection")));
+    x.UseSqlite(builder.Configuration.GetConnectionString("DefaultSqliteConnectionAWS")));
 
 // To enable includes from EFCore
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
