@@ -141,44 +141,13 @@ namespace EyecatcherPhotographyAPI.Controllers
                     return BadRequest("Invalid model object");
 
                 var appUserId = await userService.InsertAppUserAndCustomer(user);
-
-                return CreatedAtAction("GetCustomer", "Customer", new { id = appUserId });
-                //var existingUsername = await userManager.FindByNameAsync(user.UserName);
-
-                //if (existingUsername != null)
-                //    return BadRequest("Username already exists");
-
-                //var result = await userManager.CreateAsync(
-                //    new IdentityUser()
-                //    {
-                //        Id = Guid.NewGuid().ToString(),
-                //        UserName = user.UserName,
-                //        Email = user.Email
-                //    },
-                //    user.Password
-                //);
-
-                //if (!result.Succeeded)
-                //    return BadRequest(result.Errors);
-
-                //var createdUser = await userManager.FindByNameAsync(user.UserName);
-                //var isRoleAssigned = await userService.AssignRole(createdUser.Id, "Customer"); 
-
-                //if (!isRoleAssigned.Succeeded)
-                //    return BadRequest(isRoleAssigned.Errors);
-
-                //var customer = new Customer()
-                //{
-                //    Id = createdUser.Id,
-                //    FirstName = user.FirstName,
-                //    MiddleName = user.MiddleName,
-                //    LastName = user.LastName
-                //};
-
-                //await customerService.InsertCustomer(customer);
-
-                //user.Password = null;
-
+                var createdAppUser = await customerService.GetCustomerAppUserInfoByAppUserId(appUserId);
+                if (createdAppUser == null)
+                {
+                    return NotFound("User not found and may not be created");
+                }
+                
+                return StatusCode(201, createdAppUser);
             }
             catch(BadRequestException ex)
             {
