@@ -54,10 +54,17 @@ namespace EyecatcherPhotographyAPI.Controllers
 
                 if (user == null)
                 {
-                    return Unauthorized("User not found");
+                    return Unauthorized("User is not found and the token might be expired");
                 }
 
-                return Ok(user);
+                var customer = await customerService.GetCustomerAppUserInfoByAppUserId(user.Id);
+
+                if (customer == null)
+                {
+                    return Unauthorized("Customer details not found. Provided token is not a valid app user");
+                }
+
+                return Ok(customer);
             }
             catch(Exception)
             {
