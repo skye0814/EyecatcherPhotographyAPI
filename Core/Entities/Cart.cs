@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,17 +12,12 @@ namespace Core.Entities
     public class Cart
     {
         [Key]
-        public long CartID { get; set; }
+        public long CartID { get; set;}
+        public Product? Product { get; set; }
+        public float? Amount { get; set; }
         public int Quantity { get; set; }
-        public double TotalAmounts { get; set; }
 
-
-        // Nav prop
-        public string? CustomerID { get; set; }
-        public IEnumerable<Product>? Products { get; set;}
-
-        [ForeignKey("BillingDetailsID")]
-        public virtual BillingDetails? BillingDetails { get; set; }
-        public Guid? BillingDetailsID { get; set; }
+        [ForeignKey("Id")]
+        public virtual IdentityUser ApplicationUser { get; set; }
     }
 }

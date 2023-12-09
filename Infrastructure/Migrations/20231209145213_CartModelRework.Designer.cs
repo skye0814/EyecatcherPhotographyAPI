@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Data.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20231209145213_CartModelRework")]
+    partial class CartModelRework
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.19");
@@ -81,9 +83,6 @@ namespace Infrastructure.Migrations
                     b.Property<Guid?>("BillingDetailsID")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
                     b.Property<long?>("ProductID")
                         .HasColumnType("INTEGER");
 
@@ -93,8 +92,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("CartID");
 
                     b.HasIndex("BillingDetailsID");
-
-                    b.HasIndex("Id");
 
                     b.HasIndex("ProductID");
 
@@ -639,15 +636,15 @@ namespace Infrastructure.Migrations
                         {
                             Id = "22dc9879-b5f7-4fff-bd8d-b3821455b6d5",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "da9b53e2-98c3-4b7a-8858-64fc30fe6c8c",
+                            ConcurrencyStamp = "e1750379-93bc-4ced-aad3-0f392c20b871",
                             Email = "skye0814@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "SKYE0814@GMAIL.COM",
                             NormalizedUserName = "SKYE0814",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFmIl33kgeOab2fpyVWcGoENjd2IKfqCquOspU5dYfqk5C0kNOhYfIwo1ucNUV8Ggw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAECOhT6Y305v71D3DQlbCIO2OGu9JBOp7VkyQEgPaA2eBItZSJUoeNbAbyBtF06jOoQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f85b23fa-e3c8-4f6e-8a91-5e6aa4dde07a",
+                            SecurityStamp = "a2c49d40-4185-411f-9102-e9c86b88ba06",
                             TwoFactorEnabled = false,
                             UserName = "skye0814"
                         });
@@ -776,15 +773,9 @@ namespace Infrastructure.Migrations
                         .WithMany("Carts")
                         .HasForeignKey("BillingDetailsID");
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("Id");
-
                     b.HasOne("Core.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductID");
-
-                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Product");
                 });

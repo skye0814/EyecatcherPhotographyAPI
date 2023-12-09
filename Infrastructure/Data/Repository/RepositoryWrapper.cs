@@ -16,10 +16,24 @@ namespace Infrastructure.Data.Repository
         private IProductCategoryRepository productCategoryRepository;
         private IProductRepository productRepository;
         private ICustomerRepository customerRepository;
+        private ICartRepository cartRepository;
 
         public RepositoryWrapper(RepositoryContext repositoryContext)
         {
             this.repositoryContext = repositoryContext;
+        }
+
+        public ICartRepository Cart
+        {
+            get
+            {
+                if (this.cartRepository == null)
+                {
+                    cartRepository = new CartRepository(repositoryContext);
+                }
+
+                return this.cartRepository;
+            }
         }
 
         public IProductRepository Product
