@@ -32,10 +32,6 @@ namespace Infrastructure.Data.Repository
                     .WithMany(x => x.BillingDetails)
                     .HasForeignKey(x => x.CustomerID)
                     .HasPrincipalKey(x => x.CustomerID);
-
-                p.HasMany(x => x.Carts)
-                   .WithOne(x => x.BillingDetails)
-                   .HasForeignKey(x => x.BillingDetailsID);
             });
 
             modelBuilder.Entity<Customer>(p =>

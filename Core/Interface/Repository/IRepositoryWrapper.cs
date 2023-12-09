@@ -12,6 +12,7 @@ namespace Core.Interface.Repository
         IProductCategoryRepository ProductCategory { get; }
         IProductRepository Product { get; }
         ICustomerRepository Customer { get; }
+        ICartRepository Cart { get; }
         void Save();
     }
 }
