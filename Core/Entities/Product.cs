@@ -13,6 +13,7 @@ namespace Core.Entities
         public string? FreeText3 { get; set; }
         public string? FreeText4 { get; set; }
         public double Price { get; set; }
+        public string? Label { get; set; }
 
   
 
