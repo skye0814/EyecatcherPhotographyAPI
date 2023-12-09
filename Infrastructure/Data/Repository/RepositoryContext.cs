@@ -100,26 +100,26 @@ namespace Infrastructure.Data.Repository
 
             modelBuilder.Entity<Product>().HasData(
                 // Birthday Services (1)
-                new Product { ProductID = 1, ProductName = "PACKAGE 1 (PHOTO)", ProductTag = "", Price = 4500.00, ProductCategoryID = 1, FreeText1 = "1 Photographer;Pre Birthday Shoot;Soft Copy;On The Day Event Coverage" },
-                new Product { ProductID = 2, ProductName = "PACKAGE 2 (PHOTO)", ProductTag = "", Price = 6500.00, ProductCategoryID = 1, FreeText1 = "2 Photographers;Pre Birthday Shoot;Soft Copy;On The Day Event Coverage" },
-                new Product { ProductID = 3, ProductName = "PACKAGE 3 (PHOTO & VIDEO)", ProductTag = "", Price = 8500.00, ProductCategoryID = 1, FreeText1 = "1 Photographer;1 Videographer;Pre Birthday Shoot;4-5 minutes Video Highlights;Soft Copy;On The Day Event Coverage" },
-                new Product { ProductID = 4, ProductName = "ALL IN PACKAGE", ProductTag = "", Price = 22000.00, ProductCategoryID = 1, FreeText1 = "2 Photographers;1 videographer;Pre Debut or Birthday Shoot;Soft Copy;4-5 minutes Video Highlights;Unlimited Shots Photo Booth (2 hours);20 pages Hardbound Photo Album;Hair and Make Up Artist;On The Day Event Coverage" },
+                new Product { ProductID = 1, Label = "Classic", ProductName = "PACKAGE 1 (PHOTO)", ProductTag = "", Price = 4500.00, ProductCategoryID = 1, FreeText1 = "1 Photographer;Pre Birthday Shoot;Soft Copy;On The Day Event Coverage" },
+                new Product { ProductID = 2, Label = "Classic", ProductName = "PACKAGE 2 (PHOTO)", ProductTag = "", Price = 6500.00, ProductCategoryID = 1, FreeText1 = "2 Photographers;Pre Birthday Shoot;Soft Copy;On The Day Event Coverage" },
+                new Product { ProductID = 3, Label = "Elite", ProductName = "PACKAGE 3 (PHOTO & VIDEO)", ProductTag = "", Price = 8500.00, ProductCategoryID = 1, FreeText1 = "1 Photographer;1 Videographer;Pre Birthday Shoot;4-5 minutes Video Highlights;Soft Copy;On The Day Event Coverage" },
+                new Product { ProductID = 4, Label = "Prime", ProductName = "ALL IN PACKAGE", ProductTag = "", Price = 22000.00, ProductCategoryID = 1, FreeText1 = "2 Photographers;1 videographer;Pre Debut or Birthday Shoot;Soft Copy;4-5 minutes Video Highlights;Unlimited Shots Photo Booth (2 hours);20 pages Hardbound Photo Album;Hair and Make Up Artist;On The Day Event Coverage" },
 
                 // Christening Services (2)
-                new Product { ProductID = 5, ProductName = "PACKAGE 1 (PHOTO)", ProductTag = "", Price = 3000.00, ProductCategoryID = 2, FreeText1 = "" },
-                new Product { ProductID = 6, ProductName = "PACKAGE 2 (PHOTO)", ProductTag = "", Price = 5500.00, ProductCategoryID = 2, FreeText1 = "" },
-                new Product { ProductID = 7, ProductName = "PACKAGE 3 (PHOTO & VIDEO)", ProductTag = "", Price = 7500.00, ProductCategoryID = 2, FreeText1 = "" },
-                new Product { ProductID = 8, ProductName = "PACKAGE 4 (PHOTO+PHOTOBOOTH)", ProductTag = "", Price = 5500.00, ProductCategoryID = 2, FreeText1 = "" },
+                new Product { ProductID = 5, Label = "Classic", ProductName = "PACKAGE 1 (PHOTO)", ProductTag = "", Price = 3000.00, ProductCategoryID = 2, FreeText1 = "" },
+                new Product { ProductID = 6, Label = "Classic", ProductName = "PACKAGE 2 (PHOTO)", ProductTag = "", Price = 5500.00, ProductCategoryID = 2, FreeText1 = "" },
+                new Product { ProductID = 7, Label = "Elite", ProductName = "PACKAGE 3 (PHOTO & VIDEO)", ProductTag = "", Price = 7500.00, ProductCategoryID = 2, FreeText1 = "" },
+                new Product { ProductID = 8, Label = "Elite", ProductName = "PACKAGE 4 (PHOTO+PHOTOBOOTH)", ProductTag = "", Price = 5500.00, ProductCategoryID = 2, FreeText1 = "" },
 
                 // Wedding Services (3)
-                new Product { ProductID = 9, ProductName = "PACKAGE A (PHOTO)", ProductTag = "", Price = 6500.00, ProductCategoryID = 3, FreeText1 = "" },
-                new Product { ProductID = 10, ProductName = "PACKAGE B1 (PHOTO & VIDEO)", ProductTag = "", Price = 12500.00, ProductCategoryID = 3, FreeText1 = "" },
-                new Product { ProductID = 11, ProductName = "PACKAGE B2 (PHOTO & VIDEO)", ProductTag = "", Price = 14000.00, ProductCategoryID = 3, FreeText1 = "" },
-                new Product { ProductID = 12, ProductName = "PACKAGE C1 (PHOTO+VIDEO+ALBUM)", ProductTag = "", Price = 17000.00, ProductCategoryID = 3, FreeText1 = "" },
-                new Product { ProductID = 13, ProductName = "PACKAGE C2 (PHOTO+VIDEO+ALBUM)", ProductTag = "", Price = 18500.00, ProductCategoryID = 3, FreeText1 = "" },
-                new Product { ProductID = 14, ProductName = "PACKAGE D1 (PHOTO+VIDEO+HMUA)", ProductTag = "", Price = 17500.00, ProductCategoryID = 3, FreeText1 = "" },
-                new Product { ProductID = 15, ProductName = "PACKAGE D2 (PHOTO+VIDEO+ALBUM)", ProductTag = "", Price = 17500.00, ProductCategoryID = 3, FreeText1 = "" },
-                new Product { ProductID = 16, ProductName = "PACKAGE E (ALL IN)", ProductTag = "", Price = 38000.00, ProductCategoryID = 3, FreeText1 = "" },
+                new Product { ProductID = 9, Label = "Classic", ProductName = "PACKAGE A (PHOTO)", ProductTag = "", Price = 6500.00, ProductCategoryID = 3, FreeText1 = "" },
+                new Product { ProductID = 10, Label = "Elite", ProductName = "PACKAGE B1 (PHOTO & VIDEO)", ProductTag = "", Price = 12500.00, ProductCategoryID = 3, FreeText1 = "" },
+                new Product { ProductID = 11, Label = "Elite", ProductName = "PACKAGE B2 (PHOTO & VIDEO)", ProductTag = "", Price = 14000.00, ProductCategoryID = 3, FreeText1 = "" },
+                new Product { ProductID = 12, Label = "Prime", ProductName = "PACKAGE C1 (PHOTO+VIDEO+ALBUM)", ProductTag = "", Price = 17000.00, ProductCategoryID = 3, FreeText1 = "" },
+                new Product { ProductID = 13, Label = "Prime", ProductName = "PACKAGE C2 (PHOTO+VIDEO+ALBUM)", ProductTag = "", Price = 18500.00, ProductCategoryID = 3, FreeText1 = "" },
+                new Product { ProductID = 14, Label = "Prime", ProductName = "PACKAGE D1 (PHOTO+VIDEO+HMUA)", ProductTag = "", Price = 17500.00, ProductCategoryID = 3, FreeText1 = "" },
+                new Product { ProductID = 15, Label = "Prime", ProductName = "PACKAGE D2 (PHOTO+VIDEO+ALBUM)", ProductTag = "", Price = 17500.00, ProductCategoryID = 3, FreeText1 = "" },
+                new Product { ProductID = 16, Label = "Grand", ProductName = "PACKAGE E (ALL IN)", ProductTag = "", Price = 38000.00, ProductCategoryID = 3, FreeText1 = "" },
 
                 // Other Services (4)
                 new Product { ProductID = 17, ProductName = "HAIR AND MAKE UP ARTIST A", ProductTag = "", Price = 5000.00, ProductCategoryID = 4, FreeText1 = "" },
