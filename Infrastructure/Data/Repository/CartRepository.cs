@@ -25,9 +25,11 @@ namespace Infrastructure.Data.Repository
             return FindAll();
         }
 
-        public Cart GetCart()
+        public Cart? GetCart(long id)
         {
-            throw new NotImplementedException();
+            return Query()
+                .Where(x => x.CartID == id)
+                .FirstOrDefault();
         }
 
         public IQueryable<Cart> GetCartListByUID(string uid)
@@ -39,6 +41,12 @@ namespace Infrastructure.Data.Repository
         public async Task RemoveFromCart(Cart cart)
         {
             Delete(cart);
+            await SaveAsync();
+        }
+
+        public async Task AddMultipleCartItems(List<Cart> cartItems)
+        {
+            await CreateMultipleAsync(cartItems);
             await SaveAsync();
         }
     }
