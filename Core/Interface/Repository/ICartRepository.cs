@@ -10,10 +10,11 @@ namespace Core.Interface.Repository
     public interface ICartRepository : IRepositoryBase<Cart>
     {
         Task AddToCart(Cart cart);
-        Cart GetCart();
+        Cart? GetCart(long id);
         IEnumerable<Cart> GetAll();
         IQueryable<Cart> GetCartListByUID(string uid);
         Task RemoveFromCart(Cart cart);
+        Task AddMultipleCartItems(List<Cart> cartItems);
 
     }
 }
